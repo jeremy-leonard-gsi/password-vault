@@ -8,7 +8,7 @@ class Passwordvault {
 	}
 	
 	public function getSystems() {
-		$query = "SELECT * FROM companies;"
+		$query = "SELECT * FROM companies;";
 		$stmt = $this->db->prepare($query);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
