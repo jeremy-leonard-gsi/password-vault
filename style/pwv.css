@@ -1,0 +1,66 @@
+#page {
+	position: relative;
+	min-height: 100vh;
+}
+
+#container{
+/*	min-height: calc(100vh - 15rem);*/
+	padding-bottom: 1.5rem;
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 1.5rem;
+	text-align: center;
+}
+
+#customerInfo-Id{
+	min-height: calc(100vh - 6.5rem);
+}
+.cursor-copy{
+ cursor: copy;
+}
+#contacts{
+	max-height: none;
+	overflow: visible;
+}
+@media (min-width: 576px) {
+	#contacts{
+		max-height: calc(100vh - 12rem);
+		overflow-y: auto;
+		overflow-x: hidden!important;
+		padding-right: 2rem;
+	}
+}
+.pwvData{
+	max-height: none;
+	overflow: visible;
+	z-index: -1;
+}	
+@media (min-width: 576px) {
+	.pwvData{
+		max-height: calc(100vh - 15.5rem);
+		overflow-y: auto;
+		overflow-x: hidden!important;
+	}
+}
+.striped .row:nth-of-type(even){
+	background-color: rgba(0,0,0,.05);
+}
+.striped-hover .row:hover, .passwordHistoryList-Id .row:hover {
+	background-color: rgba(0,0,0,.075);
+}
+.pwvPassword{
+	color: #e9ecef;
+}
+.pwvPassword:hover{
+	color: grey;
+}
+#copyHolder {
+	position: absolute;
+	top: -20px;
+	left: -20px;
+	display: none;
+}
