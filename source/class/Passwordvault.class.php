@@ -7,7 +7,7 @@ class Passwordvault {
 		$this->db= new PDO($config->pwvDSN,$config->pwvUser,$config->pwvPassword);
 	}
 	
-	public function getSystems() {
+	public function getCompanies() {
 		$query = "SELECT * FROM companies;";
 		$stmt = $this->db->prepare($query);
 		$stmt->execute();
