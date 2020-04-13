@@ -7,6 +7,14 @@ class Passwordvault {
 		$this->db= new PDO($config->pwvDSN,$config->pwvUser,$config->pwvPassword);
 	}
 	
+	public function getSystems() {
+		$query = "SELECT * FROM companies;"
+		$stmt = $this->db->prepare($query);
+		$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}	
+	
 	public function getAccounts($companyId) {
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false AND `companyId` = :companyId ORDER BY accountName;";
 		$stmt = $this->db->prepare($query);
@@ -163,6 +171,9 @@ class Passwordvault {
 }
 /*
 
+Migrate Companies:
+
+INSERT INTO pwvdb.companies (companyId,companyName,companyCreatedBy,companyModifiedBy)SELECT ID as companyId, companyname as companyName, 'Gracon' as companyCreatedBy, 'Gracon' AS companyModifiedBy FROM DB_PWV.tbl_companies;
 
 Migrate accounts:
 

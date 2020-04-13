@@ -1,5 +1,5 @@
 <?php
-$pwv = new Passwordvault($site->config);
+
 switch($site->request->method){
 	case "POST":
 		switch($site->request->action) {

@@ -10,8 +10,8 @@
 				<input class="form-control mr-sm-2"" type="search" aria-label="Search" placeholder="Account Search" id="customerSearchId" list="accounts" name="customerName" onchange="$( '#customerSearchFormId' ).submit();">
 				<datalist id="accounts">
 					<?php
-					foreach($tp->getAccounts() AS $account){
-						echo "<option>".$account["AccountName"]."</option>\n";
+					foreach($pwv->getCompanies() AS $company){
+						echo "<option>".$company["companyName"]."</option>\n";
 					}
 					?>
 				</datalist>

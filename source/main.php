@@ -11,6 +11,7 @@ include('class/Passwordvault.class.php');
 
 $site = new Site($_CONFIG);
 
+$pwv = new Passwordvault($site->config);
 
 if($site->config->debug) {
 	echo "<!--\n";
