@@ -30,13 +30,11 @@
 	    </div>
 	  </div>
 	</div>
-	<footer id="footer">&copy;Copyright <?=date('Y')?> Gracon Services, Inc.</footer>
+	<footer id="footer">&copy;Copyright <?=date('Y')?> Centrawellness Network</footer>
 </div><!-- Page-->
 	<button class="btn btn-info material-icons-outlined md-inactive" style="right: 0; bottom: 0; position: absolute;" data-toggle="modal" data-target="#debug">bug_report</button>	
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="scripts/pwv.js"></script>
-<script src="scripts/intranet.js"></script>
-<script src="scripts/changepass.js"></script>
 </body>
 </html>
