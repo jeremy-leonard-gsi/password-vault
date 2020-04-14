@@ -32,11 +32,13 @@ if($site->config->debug) {
 if(isset($_SESSION["authenticated"])!=true OR $_SESSION["authenticated"]!=true) {
 	$module='login';
 }else{
-	$module=$site->request->module;
+	$module='passwordvault';
 }
 
-
 switch($module) {
+	case 'login':
+		include('login.php');
+		break;
 	default:
 		include('passwordvault.php');
 }
