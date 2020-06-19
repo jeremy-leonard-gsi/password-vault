@@ -41,13 +41,17 @@ function Filter(filter,column) {
 	$( this ).parent().dropdown( 'hide' );
 }
 
+function getCompany() {
+	
+}
+
 $( '#accountInfo' ).on( 'show.bs.modal', function (event) {
 	var button = $(event.relatedTarget);
 	var accountid = button.data('accountid');
 	$( '#editAccountButton-Id' ).data('accountid',accountid);
 	$( '#showPasswordHistory-Id' ).data('accountid',accountid);
 	$( '#deleteAccountId-Id' ).val(accountid);	
-	$.post('customerInfo', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
+	$.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
 		account = JSON.parse(data);
 		for (x in account) {
 			$( '#accountInfo-'+x+'-Id' ).html(account[x]);
@@ -58,7 +62,7 @@ $( '#accountInfo' ).on( 'show.bs.modal', function (event) {
 $( '#passwordHistoryModal' ).on( 'show.bs.modal', function (event) {
 	var button = $(event.relatedTarget);
 	var accountid = button.data('accountid');
-	$.post('customerInfo', {action: "getPwvPasswordHistoryJSON",accountid: accountid }).done(function (data) {
+	$.post('', {action: "getPwvPasswordHistoryJSON",accountid: accountid }).done(function (data) {
 		passwords = JSON.parse(data);
 		console.log(passwords);
 		$( '#passwordHistoryList-Id' ).empty();
@@ -72,15 +76,18 @@ $( '#passwordHistoryModal' ).on( 'show.bs.modal', function (event) {
 $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 	var button = $(event.relatedTarget);
 	var accountid = button.data('accountid');
-	console.log(accountid);
-	$.post('customerInfo', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
-		account = JSON.parse(data);
-		$( '#addEditActionId' ).val('updateAccount');
-		$( '#accountId-Id' ).val(account.accountId);
-		$( '#system-Id' ).val(account.system);
-		$( '#accountName-Id' ).val(account.accountName);
-		$( '#password-Id' ).val(account.password);
-		$( '#accountNotes-Id' ).val(account.accountNotes);
-	});
-
+	var action = button.data('action');
+	if (action=='addAccount') {
+		
+	}else{
+		$.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
+			account = JSON.parse(data);
+			$( '#addEditActionId' ).val('updateAccount');
+			$( '#accountId-Id' ).val(account.accountId);
+			$( '#system-Id' ).val(account.system);
+			$( '#accountName-Id' ).val(account.accountName);
+			$( '#password-Id' ).val(account.password);
+			$( '#accountNotes-Id' ).val(account.accountNotes);
+		});
+	}
 });

@@ -9,6 +9,7 @@ switch($site->request->method) {
 			case 'login':
 				switch($site->config->authType) {
 					case "LDAP":
+						ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
 						$ds = ldap_connect($site->config->authLDAPURI);
 						ldap_set_option($ds,LDAP_OPT_PROTOCOL_VERSION,3);
 						ldap_set_option($ds,LDAP_OPT_REFERRALS, false);
@@ -44,8 +45,18 @@ switch($site->request->method) {
 												for($g=0;$g<$users[0]['memberof']['count'];$g++){
 													$_SESSION['groups'][]=$users[0]['memberof'][$g];										
 												}
-												$tpRep = $tp->getRepByFirstLast($_SESSION['givenname'],$_SESSION['sn']);
-												$_SESSION['RepNumber']=$tpRep[0]['RepNumber'];
+												switch($site->config->userSource) {
+													case 'LDAP':
+													case 'ldap':
+														
+													
+														break;
+													case 'TP':
+													case 'tp':
+														$tpRep = $tp->getRepByFirstLast($_SESSION['givenname'],$_SESSION['sn']);
+														$_SESSION['RepNumber']=$tpRep[0]['RepNumber'];
+														break;
+												}
 												header("Location: /".$site->request->post->requestedModule);									
 											}
 											break;
@@ -77,14 +88,14 @@ switch($site->request->method) {
 include('header.php');
 
 if($site->request->module=='' OR strtolower($site->request->module)=='login') {
-	$site->request->module='schedule';
+	$site->request->module='passwordvault';
 }
 ?>
-<header class="">
+<header class="position-sticky" style="top: 0; z-index: 1">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
 		<a class="navbar-brand">
-			<img src="images/GSI-G.png" alt="Gracon Logo" width="30" height="30" class="d-inline-block align-top">
-		Gracon
+			<img src="image/logo.png" alt="Centrawellness Logo" width="30px" height="30px" class="d-inline-block align-top">
+			Centrawellness Password Database
 		</a>
 	</nav>
 </header>
@@ -96,7 +107,7 @@ if($site->request->module=='' OR strtolower($site->request->module)=='login') {
 				<div class="card-header">Login</div>
 				<div class="card-body">
 					<?php if(is_null($alert->getMessage())==false) echo $alert->show(); ?>
-					<form method="post" class="form" action="/login">
+					<form method="post" class="form" action="?module=login">
 						<input type="hidden" name="requestedModule" value="<?=$site->request->module?>">
 						<input type="hidden" name="action" value="login">
 						<div class="form-group mb-0">

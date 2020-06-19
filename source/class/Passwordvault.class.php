@@ -4,8 +4,16 @@ class Passwordvault {
 
 	public function __construct($config) {
 		$this->secret = $config->pwvSecret;
-		$this->db= new PDO($config->pwvDSN,$config->pwvUser,$config->pwvPassword);
+		$this->db = new PDO($config->pwvDSN,$config->pwvUser,base64_decode($config->pwvPassword));
 	}
+	
+	public function searchCompanies($companyName) {
+		$query = "SELECT * FROM companies WHERE companyName like :companyName;";
+		$stmt = $this->db->prepare($query);
+		$stmt->bindValue(':companyName',$companyName,PDO::PARAM_STR);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}	
 	
 	public function getCompanies() {
 		$query = "SELECT * FROM companies;";
@@ -14,10 +22,15 @@ class Passwordvault {
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}	
 	
-	public function getAccounts($companyId) {
-		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false AND `companyId` = :companyId ORDER BY accountName;";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
+	public function getAccounts($companyId=null) {
+		if(is_null($companyId)) {
+			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false ORDER BY system,accountName;";
+			$stmt = $this->db->prepare($query);
+		}else{
+			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false AND `companyId` = :companyId ORDER BY accountName;";
+			$stmt = $this->db->prepare($query);
+			$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
+		}
 		$stmt->execute();
 		$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		foreach($accounts as $key => $account){
@@ -43,7 +56,8 @@ class Passwordvault {
 			}else{
 				$accounts[$key]['password']=htmlentities(base64_decode($account['password']));
 				$this->encryptExistingPassword($account['passwordId'],base64_decode($account['password']));			
-			}		
+			}
+			$accounts[$key]['accountNotes']=base64_decode($accounts[$key]['accountNotes']);		
 		}
 		return $accounts;
 	}
@@ -81,7 +95,7 @@ class Passwordvault {
 		return $passwords; 	
 	}
 	
-	public function addAccount($companyId, $system, $accountName, $accountNotes, $password, $user) {
+	public function addAccountTP($companyId, $system, $accountName, $accountNotes, $password, $user) {
 		$query = "INSERT INTO accounts (`companyId`,`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`) VALUES (:companyId,:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes);";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
@@ -94,6 +108,18 @@ class Passwordvault {
 		$accountId=$this->db->lastInsertId();
 		$this->addPassword($accountId,$password,$user);
 	}
+	public function addAccount($system, $accountName, $accountNotes, $password, $user) {
+		$query = "INSERT INTO accounts (`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`) VALUES (:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes);";
+		$stmt = $this->db->prepare($query);
+		$stmt->bindValue('system',$system,PDO::PARAM_STR);
+		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
+		$stmt->bindValue(':accountCreatedBy',$user,PDO::PARAM_STR);
+		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
+		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
+		$stmt->execute();
+		$accountId=$this->db->lastInsertId();
+		$this->addPassword($accountId,$password,$user);
+	}
 	public function updateAccount($accountId, $system, $accountName, $accountNotes, $password, $user) {
 		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now() WHERE `accountId` = :accountId;";
 		$stmt = $this->db->prepare($query);
@@ -101,7 +127,7 @@ class Passwordvault {
 		$stmt->bindValue('system',$system,PDO::PARAM_STR);
 		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
 		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
-		$stmt->bindValue(':accountNotes',$accountNotes,PDO::PARAM_STR);
+		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
 		$stmt->execute();
 		if($password!=$this->getCurrentPassword($accountId)){
 			$this->addPassword($accountId,$password,$user);
@@ -158,7 +184,8 @@ class Passwordvault {
 		return substr(openssl_decrypt(base64_decode($text), $method, $key, OPENSSL_RAW_DATA, $iv),8);
 	}
 	
-	public function exportCSV($companyId) {
+	public function exportCSV($companyId=null) {
+		if($companyId=='null') $companyId=null;
 		$accounts = $this->getAccounts($companyId);
 		$output = '"User Name","System","Password","Notes"';
 		$output .= "\r\n";

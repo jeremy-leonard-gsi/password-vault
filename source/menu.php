@@ -2,33 +2,22 @@
 ?>
 <header class="position-sticky" style="top: 0; z-index: 1">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-<!--		<a class="navbar-brand">
-			<img src="images/GSI-G.png" alt="Gracon Logo" width="30" height="30" class="d-inline-block align-top">
-		Gracon
+		<a class="navbar-brand">
+			<img src="image/logo.png" alt="Centrawellness Logo" width="30px" height="30px" class="d-inline-block align-top">
+			Centrawellness Password Database
 		</a>
--->			<form class="form-inline" method="post" action="/customerInfo" id="customerSearchFormId">
-				<input class="form-control mr-sm-2"" type="search" aria-label="Search" placeholder="Account Search" id="customerSearchId" list="accounts" name="customerName" onchange="$( '#customerSearchFormId' ).submit();">
-				<datalist id="accounts">
-					<?php
-					foreach($pwv->getCompanies() AS $company){
-						echo "<option>".$company["companyName"]."</option>\n";
-					}
-					?>
-				</datalist>
-<!--				<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>-->
-			</form>
-			<div class="dropdown">
-				<button class="btn pl-2 material-icons-outlined md-36 md-light md-inactive" data-toggle="dropdown" type="button">account_circle</button>
-				<div class="dropdown-menu dropdown-menu-right">
-					<a href="/changepass" class="dropdown-item">Change Password</a>
-					<div class="dropdown-divider"></div>
-					<form method="post" action="/login">
-						<input type="hidden" name="action" value="logout">
-						<button class="dropdown-item" type="submit">Logout</button>
-					</form>
-				</div>			
-			</div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0"><li class="navbar-item"></li></ul>
 		</div>
+		<span class="d-sm-none d-md-inline "><?=$_SESSION['fullname'] ?></span>
+		<div class="dropdown">
+			<button class="btn pl-2 material-icons-outlined md-36 md-light md-inactive" data-toggle="dropdown" type="button">account_circle</button>
+			<div class="dropdown-menu dropdown-menu-right">
+				<form method="post" action="/login">
+					<input type="hidden" name="action" value="logout">
+					<button class="dropdown-item" type="submit">Logout</button>
+				</form>
+			</div>			
+		</div>				
 	</nav>
 </header>
-<div></div>
