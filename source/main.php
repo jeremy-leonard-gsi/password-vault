@@ -11,6 +11,11 @@ include('class/Passwordvault.class.php');
 
 $site = new Site($_CONFIG);
 
+if($site->config->requireSSL AND $_SERVER["HTTPS"]!="on"){
+	header("Location: https://pwvault.centrawellness.org".$_SERVER["REQUEST_URI"]);
+}
+
+
 $pwv = new Passwordvault($site->config);
 
 if($site->config->debug) {
