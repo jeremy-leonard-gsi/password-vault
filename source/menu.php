@@ -1,0 +1,23 @@
+<?php
+?>
+<header class="position-sticky" style="top: 0; z-index: 1">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+		<a class="navbar-brand">
+			<img src="image/logo.png" alt="Centrawellness Logo" width="30px" height="30px" class="d-inline-block align-top">
+			Centrawellness Password Database
+		</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0"><li class="navbar-item"></li></ul>
+		</div>
+		<span class="d-sm-none d-md-inline "><?=$_SESSION['fullname'] ?></span>
+		<div class="dropdown">
+			<button class="btn pl-2 material-icons-outlined md-36 md-light md-inactive" data-toggle="dropdown" type="button">account_circle</button>
+			<div class="dropdown-menu dropdown-menu-right">
+				<form method="post" action="/login">
+					<input type="hidden" name="action" value="logout">
+					<button class="dropdown-item" type="submit">Logout</button>
+				</form>
+			</div>			
+		</div>				
+	</nav>
+</header>
