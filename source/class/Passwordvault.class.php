@@ -197,13 +197,26 @@ class Passwordvault {
 }
 /*
 
-Migrate Companies:
-
-INSERT INTO pwvdb.companies (companyId,companyName,companyCreatedBy,companyModifiedBy)SELECT ID as companyId, companyname as companyName, 'Gracon' as companyCreatedBy, 'Gracon' AS companyModifiedBy FROM DB_PWV.tbl_companies;
-
 Migrate accounts:
 
-INSERT INTO pwvdb.accounts (accountId,companyId,system,accountName,accountCreatedBy,accountModifiedBy,accountCreated,accountModified,accountNotes) SELECT ID as accountId,companyID AS companyId,system, name as accountName, changedby AS accountCreatedBy, changedby AS accountModifiedBy, datechanged AS accountCreated, datechanged as accountModified, notes as AccountNotes FROM DB_PWV.tbl_users;
+INSERT INTO pwvdb.accounts (accountId
+	,system
+	,accountName
+	,accountCreatedBy
+	,accountModifiedBy
+	,accountCreated
+	,accountModified
+	,accountNotes) 
+SELECT db_pwv.tbl_users.ID as accountId
+	, db_pwv.tbl_companies.companyname AS system
+	, name as accountName
+	, changedby AS accountCreatedBy
+	, changedby AS accountModifiedBy
+	, datechanged AS accountCreated
+	, datechanged as accountModified
+	, notes as AccountNotes
+	 FROM db_pwv.tbl_users
+	 	LEFT JOIN db_pwv.tbl_companies ON db_pwv.tbl_users.companyID=db_pwv.tbl_companies.ID;
 
 Migrate Passwords:
 
