@@ -62,7 +62,7 @@ include('menu.php');
 					</div>						
 					<div class="col col-5 col-md-3 pl-1 text-nowrap" id="searchPasswordDropdownId">
 						<strong>Password</strong>
-						<button class="btn btn-sm pl-0 material-icons-outlined md-18" data-toggle="dropdown" title="Search Passwords">search</button>
+						<!-- <button class="btn btn-sm pl-0 material-icons-outlined md-18" data-toggle="dropdown" title="Search Passwords">search</button> -->
 						<div class="dropdown-menu mx-2 px-2">
 							<input id="searchPasswordId" class="form-control bg-white" type="search" placeholder="filter" onchange="Filter(this,'password');">
 						</div>
@@ -211,7 +211,7 @@ include('menu.php');
 	      				<div class="input-group">
 		      				<input class="form-control" id="password-Id" name="accountPassword" type="text" autocomplete="off" required>
 		      				<div class="input-group-append dropdown">
-			      				<button class="input-group-text" type="button" data-toggle="dropdown">generate</button>
+			      				<!-- <button class="input-group-text" type="button" data-toggle="dropdown">generate</button> -->
 			      				<div class="dropdown-menu p-2">
 			      					<div class="form-group row">
 											<label class="col-form-label">Length</label>
@@ -223,7 +223,7 @@ include('menu.php');
 											<input class="form-check-input" id="upper-Id" type="checkbox" checked>						      					
 											<label for="upper-Id">Include Upper</label>
 			      					</div>
-			      					<button class="btn btn-primary float-right" type="button">Generate</button>
+			      					<!-- <button class="btn btn-primary float-right" type="button">Generate</button> -->
 			      				</div>
 		      				</div>
 	      				</div>
