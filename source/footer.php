@@ -13,11 +13,11 @@
 					echo "_GET\n";
 					print_r($_GET);
 					echo "_POST\n";
-					print_r($_SERVER);
-					echo "_FILES\n";
 					print_r($_POST);
-					echo "_SERVER\n";
+					echo "_FILES\n";
 					print_r($_FILES);
+					echo "_SERVER\n";
+					print_r($_SERVER);
 					echo "_SESSION\n";
 					print_r($_SESSION);
 					echo "Site\n";
