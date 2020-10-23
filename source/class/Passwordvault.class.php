@@ -190,7 +190,7 @@ class Passwordvault {
 		$output = '"User Name","System","Password","Notes"';
 		$output .= "\r\n";
 		foreach($accounts as $account){
-			$output .= '"'.$account['accountName'].'","'.$account['system'].'","'.$account['password'].'","'.$account['accountNotes'].'"'."\r\n";
+			$output .= '"'.$account['accountName'].'","'.$account['system'].'","'.$account['password'].'","'.base64_decode($account['accountNotes']).'"'."\r\n";
 		}
 		return $output;
 	}

@@ -30,7 +30,7 @@
 	    </div>
 	  </div>
 	</div>
-	<footer id="footer">&copy;Copyright <?=date('Y')?> Centrawellness Network</footer>
+	<footer id="footer">&copy;Copyright <?=date('Y')?> <?=$site->config->title?></footer>
 </div><!-- Page-->
 	<button class="btn btn-info material-icons-outlined md-inactive" style="right: 0; bottom: 0; position: absolute;" data-toggle="modal" data-target="#debug">bug_report</button>	
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

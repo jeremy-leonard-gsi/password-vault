@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Centrawell Network - Password Vault</title>
+<title><?=$site->config->title?></title>
 <meta name="generator" content="Bluefish 2.2.10" >
 <meta name="author" content="JeremyL" >
 <meta name="date" content="2020-06-19T16:21:53-0500" >

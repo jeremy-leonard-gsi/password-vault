@@ -3,8 +3,8 @@
 <header class="position-sticky" style="top: 0; z-index: 1">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
 		<a class="navbar-brand">
-			<img src="image/logo.png" alt="Centrawellness Logo" width="30px" height="30px" class="d-inline-block align-top">
-			Centrawellness Password Database
+		<img src="<?=$site->config->logoURI?>" alt="Logo" width="30px" height="30px" class="d-inline-block align-top">
+			<?=$site->config->title?>	
 		</a>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0"><li class="navbar-item"></li></ul>
