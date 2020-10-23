@@ -28,6 +28,16 @@ if($site->request->method=="POST"){
 		case 'deleteAccount':
 			$pwv->deleteAccount($site->request->post->accountId);
 			break;
+		case 'import':
+			if(isset($_FILES) 
+				AND is_array($_FILES) 
+				AND isset($_FILES['CSVFile'])
+				AND $_FILES['CSVFile']['type']=='text/csv'
+				AND $_FILES['CSVFile']['error']==0
+				AND $_FILES['CSVFile']['size'] > 0
+			) {
+				$pwv->importCSV($_FILES['CSVFile']);
+			}
 	}
 }
 if(isset($site->request->get->export)){
@@ -77,7 +87,8 @@ include('menu.php');
 						<div class="col col-2 col-md-1">
 							<div class="btn-group mb-1 float-right" role="group">
 								<button class="btn btn-light material-icons-outlined md-18" title="Add Account" data-action="addAccount" data-accountid="" data-toggle="modal" data-target="#addEditAccount">add_box</button>
-								<a class="btn btn-light material-icons-outlined md-18" title="Export to CSV" href="?export=null" target="_blank">save_alt</a>
+								<a class="btn btn-light material-icons-outlined md-18" title="Export to CSV" href="?export=null" target="_blank">arrow_circle_down</a>
+								<button class="btn btn-light material-icons-outlined md-18" title="Import from CSV" data-action="import" data-toggle="modal" data-target="#importFromCSV">arrow_circle_up</button>
 							</div>
 						</div>
 				</div>
@@ -171,6 +182,31 @@ include('menu.php');
 				</div>
 				<div class="modal-body">
 				<div id="passwordHistoryList-Id" class="striped striped-hover"></div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" type="button" data-dismiss="modal">Close</button>							
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="importFromCSV" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Import From CSV</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" enctype="multipart/form-data" action="<?=$_SERVER["REQUEST_URI"] ?>">
+						<div class="custom-file">
+							<input type="hidden" name="action" value="import">
+							<input type="file" class="custom-file-input" id="importCSVFile" name="CSVFile">
+							<label class="custom-file-label" for="importCSVFile">Choose File</label>
+						</div>
+						<button type="submit" class="btn btn-primary float-right mt-2">Import</button>
+					</form>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-primary" type="button" data-dismiss="modal">Close</button>							
