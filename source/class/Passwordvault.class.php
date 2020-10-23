@@ -135,7 +135,6 @@ class Passwordvault {
 	}			
 	
 	public function addPassword($accountId,$password,$user){
-		error_log($accountId);
 		$query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
@@ -182,6 +181,19 @@ class Passwordvault {
 		// IV must be exact 16 chars (128 bit)
 		$iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
 		return substr(openssl_decrypt(base64_decode($text), $method, $key, OPENSSL_RAW_DATA, $iv),8);
+	}
+
+
+	public function importCSV($file) {
+		$fh = fopen($file['tmp_name'], 'r');
+		$count = 0;
+		while(($row = fgetcsv($fh)) !== false){
+			$count++;
+			if($count > 1 ) {
+				$this->addAccount($row[1],$row[0],$row[3],$row[2],$_SESSION['username']);
+			}
+		}
+		fclose($fh);
 	}
 	
 	public function exportCSV($companyId=null) {

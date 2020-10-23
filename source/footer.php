@@ -14,6 +14,8 @@
 					print_r($_GET);
 					echo "_POST\n";
 					print_r($_POST);
+					echo "_FILES\n";
+					print_r($_FILES);
 					echo "_SERVER\n";
 					print_r($_SERVER);
 					echo "_SESSION\n";
