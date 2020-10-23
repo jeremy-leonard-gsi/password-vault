@@ -95,7 +95,7 @@ if($site->request->module=='' OR strtolower($site->request->module)=='login') {
 	<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
 		<a class="navbar-brand">
 		<img src="<?=$site->config->logoURI ?>" alt="<?=$site->config->title ?> logo" width="30px" height="30px" class="d-inline-block align-top">
-			<?=$site->config->title ?> Password Database
+			<?=$site->config->title ?>
 		</a>
 	</nav>
 </header>
