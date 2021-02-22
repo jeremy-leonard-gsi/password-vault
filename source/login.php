@@ -13,6 +13,7 @@ switch($site->request->method) {
 						$ds = ldap_connect($site->config->authLDAPURI);
 						ldap_set_option($ds,LDAP_OPT_PROTOCOL_VERSION,3);
 						ldap_set_option($ds,LDAP_OPT_REFERRALS, false);
+						ldap_set_option($ds, LDAP_OPT_X_TLS_REQUIRE_CERT, LDAP_OPT_X_TLS_NEVER);
 						ldap_bind($ds,$site->config->authLDAPBindDN,base64_decode($site->config->authLDAPSecret));
 						if(ldap_errno($ds)) {
 							$alert->setMessage(ldap_error($ds));
