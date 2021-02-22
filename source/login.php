@@ -58,7 +58,7 @@ switch($site->request->method) {
 														$_SESSION['RepNumber']=$tpRep[0]['RepNumber'];
 														break;
 												}
-												header("Location: /".$site->request->post->requestedModule);									
+												header("Location: /".$site->config->base.'/'.$site->request->post->requestedModule);									
 											}
 											break;
 										default:
@@ -80,7 +80,8 @@ switch($site->request->method) {
 					unset($_SESSION[$key]);	
 				}
 				$_SESSION['authenticated']=false;
-				header("Location: /login");
+				header("Location: /".$site->config->base."/");
+				exit;
 				break;
 		}
 			
@@ -89,7 +90,7 @@ switch($site->request->method) {
 include('header.php');
 
 if($site->request->module=='' OR strtolower($site->request->module)=='login') {
-	$site->request->module='passwordvault';
+	$site->request->module='';
 }
 ?>
 <header class="position-sticky" style="top: 0; z-index: 1">
@@ -108,7 +109,7 @@ if($site->request->module=='' OR strtolower($site->request->module)=='login') {
 				<div class="card-header">Login</div>
 				<div class="card-body">
 					<?php if(is_null($alert->getMessage())==false) echo $alert->show(); ?>
-					<form method="post" class="form" action="?module=login">
+					<form method="post" class="form">
 						<input type="hidden" name="requestedModule" value="<?=$site->request->module?>">
 						<input type="hidden" name="action" value="login">
 						<div class="form-group mb-0">

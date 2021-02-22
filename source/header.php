@@ -3,8 +3,8 @@
 <head>
 <title><?=$site->config->title?></title>
 <meta name="generator" content="Bluefish 2.2.10" >
-<meta name="author" content="JeremyL" >
-<meta name="date" content="2020-06-19T16:21:53-0500" >
+<meta name="author" content="Jeremy Leonard" >
+<meta name="date" content="2021-02-22T15:41:19-0500" >
 <meta name="copyright" content="Gracon Services, Inc.">
 <meta name="keywords" content="">
 <meta name="description" content="">
@@ -15,10 +15,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <link href="style/pwv.css" type="text/css" rel="stylesheet">
 <link href="style/materials-design.css" type="text/css" rel="stylesheet">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
 </head>
 <body>
 <input id="copyHolder">
