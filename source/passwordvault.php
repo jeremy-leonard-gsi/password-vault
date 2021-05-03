@@ -15,7 +15,8 @@ if($site->request->method=="POST"){
 									$site->request->post->accountName,
 									$site->request->post->accountNotes,
 									$site->request->post->accountPassword,
-									$_SESSION["username"]);
+									$_SESSION["username"],
+									$site->request->post->url);
 			break;
 		case 'updateAccount':
 			$pwv->updateAccount($site->request->post->accountId,
@@ -23,7 +24,8 @@ if($site->request->method=="POST"){
 									$site->request->post->accountName,
 									$site->request->post->accountNotes,
 									$site->request->post->accountPassword,
-									$_SESSION["username"]);
+									$_SESSION["username"],
+									$site->request->post->url);
 			break;
 		case 'deleteAccount':
 			$pwv->deleteAccount($site->request->post->accountId);
@@ -97,7 +99,13 @@ include('menu.php');
 							foreach($site->passwords as $key => $password){
 								?>
 								<div class="row m-0 border-bottom text-nowrap">
-									<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system>?$key?>" onclick="advancedCopyTo('system<?$key?>');" title="Click to copy to your clipboard."><?=$password["system"]?></div>
+									<?php
+									if(is_null($password['url']) OR $password['url']=='') {
+										echo '<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system'.$key.'" onclick="advancedCopyTo(\'accountName<?=$key?>\');" title="Click to copy to your clipboard.">'.$password["system"].'</div>';
+									}else{
+										echo '<a href="'.$password['url'].'" target="_blank" class="col col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system'.$key.'" title="Click to go to the URL: '.$password['url'].'">'.$password["system"].'</a>';
+									}
+									?>
 									<div class="col col-5 col-md-3 cursor-copy text-truncate" data-fieldName="accountName" id="accountName<?=$key?>" onclick="advancedCopyTo('accountName<?$key?>');" title="Click to copy to your clipboard."><?=$password["accountName"]?></div>
 									<div class="col col-6 col-md-3">
 										<div class="input-group">
@@ -135,6 +143,7 @@ include('menu.php');
 					<?php
 						$fields = [
 							'system'=>'System',
+							'url'=>'URL',
 							'accountName'=>'Account Name',
 							'accountCreated'=>'Created Date',
 							'accountCreatedBy'=>'Created By',
@@ -233,6 +242,12 @@ include('menu.php');
 	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="system-Id">System</label>
 	      			<div class="col-sm-9">
 			      		<input class="form-control" id="system-Id" name="system" type="text" autocomplete="off" required>
+			      	</div>
+	      		</div>
+	      		<div class="form-group row">
+	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="url-Id">URL</label>
+	      			<div class="col-sm-9">
+			      		<input class="form-control" id="url-Id" name="url" type="url" autocomplete="off">
 			      	</div>
 	      		</div>
 	      		<div class="form-group row">

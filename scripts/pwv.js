@@ -84,6 +84,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 			account = JSON.parse(data);
 			$( '#addEditActionId' ).val('updateAccount');
 			$( '#accountId-Id' ).val(account.accountId);
+			$( '#url-Id' ).val(account.url);
 			$( '#system-Id' ).val(account.system);
 			$( '#accountName-Id' ).val(account.accountName);
 			$( '#password-Id' ).val(account.password);

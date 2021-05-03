@@ -95,8 +95,8 @@ class Passwordvault {
 		return $passwords; 	
 	}
 	
-	public function addAccountTP($companyId, $system, $accountName, $accountNotes, $password, $user) {
-		$query = "INSERT INTO accounts (`companyId`,`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`) VALUES (:companyId,:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes);";
+	public function addAccountTP($companyId, $system, $accountName, $accountNotes, $password, $user, $url) {
+		$query = "INSERT INTO accounts (`companyId`,`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`,`url`) VALUES (:companyId,:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes,:url);";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
 		$stmt->bindValue('system',$system,PDO::PARAM_STR);
@@ -104,30 +104,33 @@ class Passwordvault {
 		$stmt->bindValue(':accountCreatedBy',$user,PDO::PARAM_STR);
 		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
 		$stmt->bindValue(':accountNotes',$accountNotes,PDO::PARAM_STR);
+		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
 		$stmt->execute();
 		$accountId=$this->db->lastInsertId();
 		$this->addPassword($accountId,$password,$user);
 	}
-	public function addAccount($system, $accountName, $accountNotes, $password, $user) {
-		$query = "INSERT INTO accounts (`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`) VALUES (:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes);";
+	public function addAccount($system, $accountName, $accountNotes, $password, $user, $url) {
+		$query = "INSERT INTO accounts (`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`,`url`) VALUES (:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes,:url);";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue('system',$system,PDO::PARAM_STR);
 		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
 		$stmt->bindValue(':accountCreatedBy',$user,PDO::PARAM_STR);
 		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
 		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
+		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
 		$stmt->execute();
 		$accountId=$this->db->lastInsertId();
 		$this->addPassword($accountId,$password,$user);
 	}
-	public function updateAccount($accountId, $system, $accountName, $accountNotes, $password, $user) {
-		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now() WHERE `accountId` = :accountId;";
+	public function updateAccount($accountId, $system, $accountName, $accountNotes, $password, $user, $url) {
+		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now(), `url` = :url WHERE `accountId` = :accountId;";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
 		$stmt->bindValue('system',$system,PDO::PARAM_STR);
 		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
 		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
 		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
+		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
 		$stmt->execute();
 		if($password!=$this->getCurrentPassword($accountId)){
 			$this->addPassword($accountId,$password,$user);
@@ -190,7 +193,7 @@ class Passwordvault {
 		while(($row = fgetcsv($fh)) !== false){
 			$count++;
 			if($count > 1 ) {
-				$this->addAccount($row[1],$row[0],$row[3],$row[2],$_SESSION['username']);
+				$this->addAccount($row[1],$row[0],$row[3],$row[2],$_SESSION['username'],$row[4]);
 			}
 		}
 		fclose($fh);
@@ -199,10 +202,10 @@ class Passwordvault {
 	public function exportCSV($companyId=null) {
 		if($companyId=='null') $companyId=null;
 		$accounts = $this->getAccounts($companyId);
-		$output = '"User Name","System","Password","Notes"';
+		$output = '"User Name","System","Password","Notes","URL"';
 		$output .= "\r\n";
 		foreach($accounts as $account){
-			$output .= '"'.$account['accountName'].'","'.$account['system'].'","'.$account['password'].'","'.base64_decode($account['accountNotes']).'"'."\r\n";
+			$output .= '"'.$account['accountName'].'","'.$account['system'].'","'.$account['password'].'","'.base64_decode($account['accountNotes']).'","'.$account['url'].'"'."\r\n";
 		}
 		return $output;
 	}
