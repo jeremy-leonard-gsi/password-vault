@@ -19,6 +19,9 @@ switch($site->request->method) {
 							$alert->setMessage(ldap_error($ds));
 						}else{
 							$filter = "(&".$site->config->authLDAPFilter."(".$site->config->authLDAPUserAttribute."=".$site->request->post->username."))";
+							if($site->config->debug) {
+								error_log($filter);
+							}
 							$results = ldap_search($ds, $site->config->authLDAPBaseDN,$filter);
 							if(ldap_errno($ds)) {
 								$alert->setMessage(ldap_error($ds));
