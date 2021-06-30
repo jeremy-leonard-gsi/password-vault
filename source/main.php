@@ -37,7 +37,8 @@ if((isset($_SESSION["authenticated"])!=true OR $_SESSION["authenticated"]!=true)
 }elseif((isset($_SESSION["authenticated"])==true AND $_SESSION["authenticated"]==true) OR $site->validateAPI()){
 	$module=$site->request->module;
 }else{
-	header('HTTP/1.0 403 Forbidden');
+	header('HTTP/1.1 403 Forbidden');
+	exit;
 }
 
 if($site->config->debug) {
