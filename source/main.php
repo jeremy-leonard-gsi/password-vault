@@ -36,6 +36,8 @@ if((isset($_SESSION["authenticated"])!=true OR $_SESSION["authenticated"]!=true)
 	$module='login';
 }elseif((isset($_SESSION["authenticated"])==true AND $_SESSION["authenticated"]==true) OR $site->validateAPI()){
 	$module=$site->request->module;
+}else{
+	$module='login';
 }
 
 if($site->config->debug) {
