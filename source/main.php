@@ -13,6 +13,9 @@ $site = new Site($_CONFIG);
 
 if($site->config->requireSSL AND $_SERVER["HTTPS"]!="on"){
 	header("Location: https://".$_SERVER["HTTP_HOST"]."/".$_SERVER["REQUEST_URI"]);
+	if($site->config->debug) {
+		error_log("Redirecting for SSL");
+	}
 }
 
 
@@ -38,6 +41,10 @@ if(isset($_SESSION["authenticated"])!=true OR $_SESSION["authenticated"]!=true) 
 	$module='login';
 }else{
 	$module=$site->request->module;
+}
+
+if($site->config->debug) {
+	error_log($module);
 }
 
 switch($module) {

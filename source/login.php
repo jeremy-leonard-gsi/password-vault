@@ -58,7 +58,7 @@ switch($site->request->method) {
 														$_SESSION['RepNumber']=$tpRep[0]['RepNumber'];
 														break;
 												}
-												header("Location: /".$site->config->base.'/'.$site->request->post->requestedModule);									
+												header("Location: ".$site->config->base.'/'.$site->request->post->requestedModule);									
 											}
 											break;
 										default:
@@ -80,7 +80,8 @@ switch($site->request->method) {
 					unset($_SESSION[$key]);	
 				}
 				$_SESSION['authenticated']=false;
-				header("Location: /".$site->config->base."/");
+				error_log($site->config->base."/");
+				header("Location: ".$site->config->base."/");
 				exit;
 				break;
 		}
