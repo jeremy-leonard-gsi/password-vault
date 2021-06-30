@@ -24,7 +24,7 @@ $pwv = new Passwordvault($site->config);
 if($site->config->debug) {
 	error_log($_SERVER['REQUEST_URI']);
 	error_log($_SERVER['REQUEST_METHOD']);
-	error_log("API Key: ".$site->request->apikey);
+	error_log("API Key: ".$site->request->apikey??'');
 	error_log("Is Valid API Key: ".$site->validateAPI());
 }
 //Force login if not already authenticated.
