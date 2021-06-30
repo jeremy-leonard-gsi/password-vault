@@ -12,7 +12,8 @@ class Site extends SiteObject{
 	}
 	
 	public function validateAPI() {
-		if($this->config->enableAPI AND isset($this->request->apikey)) {
+		if($this->config->enableAPI AND isset($this->request->apikey) AND $this->request->apikey===$this->config->apikey) {
+			$_SESSION['username']='API';
 			return $this->request->apikey===$this->config->apikey;
 		}else{
 			return false;

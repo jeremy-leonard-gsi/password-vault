@@ -132,22 +132,22 @@ class Passwordvault {
 		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
 		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
 		$stmt->execute();
-		if($password!=$this->getCurrentPassword($accountId)){
-			$this->addPassword($accountId,$password,$user);
-		}
+		$this->addPassword($accountId,$password,$user);
 	}			
 	
 	public function addPassword($accountId,$password,$user){
-		$query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-		$stmt->execute();
-		$query = "INSERT INTO `passwords` (`accountId`,`password`,`passwordCreatedBy`,`passwordActive`) VALUES (:accountId, :password, :user, 1);";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-		$stmt->bindValue(':password','enc:'.$this->pwvEncrypt($password,$this->secret),PDO::PARAM_STR);
-		$stmt->bindValue(':user',$user,PDO::PARAM_STR);
-		$stmt->execute();
+		if($password!=$this->getCurrentPassword($accountId)){
+			$query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
+			$stmt = $this->db->prepare($query);
+			$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+			$stmt->execute();
+			$query = "INSERT INTO `passwords` (`accountId`,`password`,`passwordCreatedBy`,`passwordActive`) VALUES (:accountId, :password, :user, 1);";
+			$stmt = $this->db->prepare($query);
+			$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+			$stmt->bindValue(':password','enc:'.$this->pwvEncrypt($password,$this->secret),PDO::PARAM_STR);
+			$stmt->bindValue(':user',$user,PDO::PARAM_STR);
+			$stmt->execute();
+		}
 	}	
 
 	public function deleteAccount($accountId) {
