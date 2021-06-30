@@ -27,6 +27,11 @@ if($site->request->method=="POST"){
 									$_SESSION["username"],
 									$site->request->post->url);
 			break;
+		case 'updatePassword':
+			$pwv->addPassword($site->request->post->accountId,
+									$site->request->post->accountPassword,
+									$_SESSION["username"]);
+			break;
 		case 'deleteAccount':
 			$pwv->deleteAccount($site->request->post->accountId);
 			break;
