@@ -55,7 +55,7 @@ include('menu.php');
 	?>
 	<div class="container-fluid">
 		<div class="card mt-2" id="customerInfo-Id">
-			<div class="card-header"><?=$site->system[0]['companyName']?></div>
+			<div class="card-header"><?=$site->system[0]['companyName']??''?></div>
 			<div class="card-body px-1">
 				<div class="row no-gutters border-bottom bg-white">
 					<div class="col col-2 text-nowrap d-none d-md-block" id="searchSystemDropdownId">
@@ -170,7 +170,7 @@ include('menu.php');
 				<div class="modal-footer">
 					<form method="post" action="">
 						<input type="hidden" name="action" value="deleteAccount">
-						<input type="hidden" name="customerName" value="<?=$site->request->post->systemName?>">
+						<input type="hidden" name="customerName" value="<?=$site->request->post->systemName??''?>">
 						<input type="hidden" id="deleteAccountId-Id" name="accountId" value="">
 						<button class="btn btn-danger" type="submit">Delete</button>
 					</form>
@@ -236,8 +236,8 @@ include('menu.php');
 		      <div class="modal-body">
 	      		<input id="addEditActionId" name="action" type="hidden" value="addAccount">
 	      		<input id="accountId-Id" name="accountId" type="hidden">
-	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']?>">
-	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName?>">
+	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']??''?>">
+	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName??''?>">
 	      		<div class="form-group row">
 	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="system-Id">System</label>
 	      			<div class="col-sm-9">
