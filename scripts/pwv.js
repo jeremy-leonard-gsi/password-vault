@@ -94,7 +94,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
                         acls='';
                         account.acls.forEach(function(acl) {
                             acls += '<div class="form-check">';
-                            acls += '<input class="form-check-input" type="checkbox" name="acl[]" value="' + acl + '" id="'+ acl +'">';
+                            acls += '<input class="form-check-input" type="checkbox" name="acl[]" value="' + acl + '" id="'+ acl +'" checked>';
                             acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
                             acls += '</div>';
                         });
