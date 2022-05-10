@@ -89,6 +89,15 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 			$( '#accountName-Id' ).val(account.accountName);
 			$( '#password-Id' ).val(account.password);
 			$( '#accountNotes-Id' ).val(account.accountNotes);
+                        $( '#editaccesscontrol' ).html('');
+                        acls='';
+                        account.acls.forEach(function(acl) {
+                            acls += '<div class="form-check">';
+                            acls += '<input class="form-check-input" type="checkbox" name="acl[]" value="' + acl + '" id="'+ acl +'">';
+                            acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
+                            acls += '</div>';
+                        });
+                        $( '#editaccesscontrol' ).html(acls);
 		});
 	}
 });
