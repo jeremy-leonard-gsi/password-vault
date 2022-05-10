@@ -116,7 +116,7 @@ class Passwordvault {
                 }
                 $accounts[$key]['accountNotes']=base64_decode($accounts[$key]['accountNotes']);		
             }
-            $query = "SELECT group FROM acls WHERE accountId=:accountId;";
+            $query = "SELECT `group` FROM acls WHERE accountId=:accountId;";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(":accountId", $accountId);
             $stmt->execute();
