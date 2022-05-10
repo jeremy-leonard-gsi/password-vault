@@ -194,7 +194,7 @@ class Passwordvault {
 		$this->addPassword($accountId,$password,$user);
 	}
 	public function updateAccount($accountId, $system, $accountName, $accountNotes, $password, $user, $url) {
-		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now(), `url` = :url WHERE `accountId` = :accountId;";
+		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now(), `url` = :url WHERE accounts.`accountId` = :accountId;";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
 		$stmt->bindValue('system',$system,PDO::PARAM_STR);
