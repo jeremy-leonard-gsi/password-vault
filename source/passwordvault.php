@@ -305,6 +305,11 @@ include('menu.php');
 	      		</div>
                         </div>
                             <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
+                                <?php
+                                foreach(array_intersect($site->config->groupDNs,$_SESSION['groups']) as $group){
+                                    echo $group;
+                                }
+                                ?>
                             </div>
                         </div>
 		      </div>
