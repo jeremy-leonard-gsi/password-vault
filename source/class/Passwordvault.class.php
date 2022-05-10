@@ -85,39 +85,64 @@ class Passwordvault {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
             }else{
-		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
-            
+		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId AND ";
+                foreach($_SESSION['groups'] as $key => $group){
+                    $groups[] = "acls.group=:group$key";
+                }
+                $query .= implode(' OR ', $groups);
+                $query .= ");";
+                $stmt = $this->db->prepare($query);
+                foreach($_SESSION['groups'] as $key => $group){
+                    $stmt->bindValue(":group$key",$group);
+                }
             }
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-		$stmt->execute();
-		$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($accounts as $key => $account){
-			if(substr($account['password'],0,4)=='enc:') {
-				$accounts[$key]['password']=htmlentities($this->pwvDecrypt(substr($account['password'],4),$this->secret));
-			}else{
-				$accounts[$key]['password']=htmlentities(base64_decode($account['password']));
-				$this->encryptExistingPassword($account['passwordId'],base64_decode($account['password']));			
-			}
-			$accounts[$key]['accountNotes']=base64_decode($accounts[$key]['accountNotes']);		
-		}
-		return $accounts;
+            $stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
+            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($accounts as $key => $account){
+                if(substr($account['password'],0,4)=='enc:') {
+                    $accounts[$key]['password']=htmlentities($this->pwvDecrypt(substr($account['password'],4),$this->secret));
+                }else{
+                    $accounts[$key]['password']=htmlentities(base64_decode($account['password']));
+                    $this->encryptExistingPassword($account['passwordId'],base64_decode($account['password']));			
+                }
+                $accounts[$key]['accountNotes']=base64_decode($accounts[$key]['accountNotes']);		
+            }
+            return $accounts;
 	}
 	public function getCurrentPassword($accountId) {
+            if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM `passwords` WHERE accountid=:accountid AND passwordActive=true;";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
-		$stmt->execute();
-		$passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($passwords as $key => $password){
-			if(substr($password['password'],0,4)=='enc:') {
-				$passwords[$key]['password']=htmlentities($this->pwvDecrypt(substr($password['password'],4),$this->secret));		
-			}else{
-				$passwords[$key]['password']=htmlentities(base64_decode($password['password']));
-				$this->encryptExistingPassword($password['passwordId'],base64_decode($password['password']));			
-			}		
-		}
-		return $passwords[0]['password']; 	
+            }else{
+		$query = "SELECT * FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE accountid=:accountid AND passwordActive=true AND (";
+                foreach($_SESSION['groups'] as $key => $group){
+                    $groups[] = "acls.group=:group$key";
+                }
+                $query .= implode(' OR ', $groups);
+                $query .= ");";
+                $stmt = $this->db->prepare($query);
+                foreach($_SESSION['groups'] as $key => $group){
+                    $stmt->bindValue(":group$key",$group);
+                }
+            }
+            $stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
+            $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($passwords as $key => $password){
+                if(substr($password['password'],0,4)=='enc:') {
+                    $passwords[$key]['password']=htmlentities($this->pwvDecrypt(substr($password['password'],4),$this->secret));		
+                }else{
+                    $passwords[$key]['password']=htmlentities(base64_decode($password['password']));
+                    $this->encryptExistingPassword($password['passwordId'],base64_decode($password['password']));			
+                }		
+            }
+            return $passwords[0]['password']; 	
 	}
 
 	public function getPasswordHistory($accountId) {
