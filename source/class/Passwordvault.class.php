@@ -167,10 +167,10 @@ class Passwordvault {
                     $stmt->bindValue(":group$key",$group);
                 }
             }
-            $stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
             if($this->config->debug){
                 error_log($stmt->queryString);
             }
+            $stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
             $stmt->execute();
             $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach($passwords as $key => $password){
