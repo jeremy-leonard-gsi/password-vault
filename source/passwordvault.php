@@ -245,14 +245,16 @@ include('menu.php');
 	      		<input id="accountId-Id" name="accountId" type="hidden">
 	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']??''?>">
 	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName??''?>">
-                        <ul class="nav nav-tabs mb-1">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#">Account Info</a>
+                        <ul class="nav nav-tabs mb-1" id="EditAccountTabId" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="editaccountinfo-tab" data-toggle="tab" href="#editaccountinfo" role="tab" aria-controls="editaccountinfo" aria-selected="true">Account Info</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Access Control</a>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="editaccesscontrol-tab" data-toggle="tab" href="#editaccesscontrol" role="tab" aria-controls="editaccesscontrol" aria-selected="false">Access Control</a>
                             </li>
                         </ul>
+                        <div class="tab-content" id="addedit-tabs">
+                            <div class="tab-pane fade show active" id="editaccountinfo" role="tabpanel" aria-labeledby="editaccountinfo-tab">
 	      		<div class="form-group row">
 	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="system-Id">System</label>
 	      			<div class="col-sm-9">
@@ -301,6 +303,10 @@ include('menu.php');
 		   	   		<textarea class="form-control" id="accountNotes-Id" name="accountNotes"></textarea>
 		      		</div>
 	      		</div>
+                        </div>
+                            <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
+                            </div>
+                        </div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
