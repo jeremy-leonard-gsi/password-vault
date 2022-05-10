@@ -272,7 +272,6 @@ class Passwordvault {
         
         protected function deleteACL($accountId, $removes){
             $query = "DELETE FROM acls WHERE accountId=:accountId AND (";
-            $DNs[];
             foreach($removes as $key => $dn){
                 $DNs[] .= "`group` = :group$key";
             }
