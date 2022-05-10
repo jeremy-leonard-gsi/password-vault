@@ -92,11 +92,17 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 			$( '#accountNotes-Id' ).val(account.accountNotes);
                         $( '#editaccesscontrol-groups' ).html('');
                         acls='';
-                        account.acls.forEach(function(acl) {
-                            acls += '<div class="form-check">';
-                            acls += '<input class="form-check-input" type="checkbox" name="acl[]" value="' + acl + '" id="'+ acl +'" checked>';
-                            acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
-                            acls += '</div>';
+                        account.configGroups.forEach(function(acl) {
+                            if(account.userGroups.includes(acl)){
+                                acls += '<div class="form-check">';
+                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl;
+                                if(account.acls.includes(acl)){
+                                    acls += ' checked';
+                                }
+                                acls += '>';
+                                acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
+                                acls += '</div>';
+                            }
                         });
                         $( '#editaccesscontrol-groups' ).html(acls);
 		});

@@ -25,7 +25,8 @@ if($site->request->method=="POST"){
 									$site->request->post->accountNotes,
 									$site->request->post->accountPassword,
 									$_SESSION["username"],
-									$site->request->post->url);
+									$site->request->post->url,
+                                                                        $site->request->post->acls);
 			if(isset($site->request->apikey)) exit;
 			break;
 		case 'updatePassword':
