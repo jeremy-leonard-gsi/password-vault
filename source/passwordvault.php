@@ -305,8 +305,9 @@ include('menu.php');
 	      		</div>
                         </div>
                             <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
+                                <div id="editaccesscontrol-groups"></div>
+                                <p>Members of the group, <?=$site->config->globalAdminGroupDN?> can always see all passwords.</p><p>If no groups are checked on this screen only members of this admin groups will be able to see this account.</p>
                             </div>
-                            <div>Members of the group <?=$site->config->globalAdminGroupDN?> can always see all passwords. If no groups are checked on this screen only members of this admin groups will be able to see this account.</div>
                         </div>
 		      </div>
 		      <div class="modal-footer">
