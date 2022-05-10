@@ -116,6 +116,12 @@ class Passwordvault {
                 }
                 $accounts[$key]['accountNotes']=base64_decode($accounts[$key]['accountNotes']);		
             }
+            $query = "SELECT groups FROM acls WHERE accountId=:accountId;";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(":accountId", $accountId);
+            $stmt->execute();
+            $groups = $stmt->fetchAll();
+            $accounts['acls']=$groups;
             return $accounts;
 	}
 	public function getCurrentPassword($accountId) {
