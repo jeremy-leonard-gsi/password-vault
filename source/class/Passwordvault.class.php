@@ -250,7 +250,7 @@ class Passwordvault {
             if(count($removes) > 0){
                 $this->deleteACL($accountId, $removes);
             }
-            $adds = array_intersect(array_intersect(explode(';',$this->config->groupDNs),(array)$acls),$current);
+            $adds = array_diff($current,array_intersect(explode(';',$this->config->groupDNs),(array)$acls));
             if(count($adds) > 0){
                 $this->addACL($accountId,$adds);
             }
