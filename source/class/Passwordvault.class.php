@@ -85,6 +85,7 @@ class Passwordvault {
 	public function getAccountInfo($accountId) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
+                $stmt = $this->db->prepare($query);
             }else{
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE accounts.accountId=:accountId AND (";
                 foreach($_SESSION['groups'] as $key => $group){
@@ -120,6 +121,7 @@ class Passwordvault {
 	public function getCurrentPassword($accountId) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM `passwords` WHERE `passwords`.accountid=:accountid AND passwordActive=true;";
+                $stmt = $this->db->prepare($query);
             }else{
 		$query = "SELECT * FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE `passwords`.accountid=:accountid AND passwordActive=true AND (";
                 foreach($_SESSION['groups'] as $key => $group){
@@ -152,6 +154,7 @@ class Passwordvault {
 	public function getPasswordHistory($accountId) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM `passwords` WHERE accountid=:accountid ORDER BY passwordCreated DESC;";
+                $stmt = $this->db->prepare($query);
             }else{
 		$query = "SELECT * FROM `passwords` LEFT JOIN acls ON `passwords`.accountId=acls.accountId WHERE `passwords`.accountid=:accountid AND (";
                 foreach($_SESSION['groups'] as $key => $group){
@@ -163,21 +166,22 @@ class Passwordvault {
                 foreach($_SESSION['groups'] as $key => $group){
                     $stmt->bindValue(":group$key",$group);
                 }
-                
             }
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
-		$stmt->execute();
-		$passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($passwords as $key => $password){
-			if(substr($password['password'],0,4)=='enc:') {
-				$passwords[$key]['password']=htmlentities($this->pwvDecrypt(substr($password['password'],4),$this->secret));		
-			}else{
-				$passwords[$key]['password']=htmlentities(base64_decode($password['password']));
-				$this->encryptExistingPassword($password['passwordId'],base64_decode($password['password']));			
-			}		
-		}
-		return $passwords; 	
+            $stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
+            $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($passwords as $key => $password){
+                if(substr($password['password'],0,4)=='enc:') {
+                    $passwords[$key]['password']=htmlentities($this->pwvDecrypt(substr($password['password'],4),$this->secret));		
+                }else{
+                    $passwords[$key]['password']=htmlentities(base64_decode($password['password']));
+                    $this->encryptExistingPassword($password['passwordId'],base64_decode($password['password']));			
+                }		
+            }
+            return $passwords; 	
 	}
 	
 	public function addAccountTP($companyId, $system, $accountName, $accountNotes, $password, $user, $url) {
@@ -195,51 +199,66 @@ class Passwordvault {
 		$this->addPassword($accountId,$password,$user);
 	}
 	public function addAccount($system, $accountName, $accountNotes, $password, $user, $url) {
-		$query = "INSERT INTO accounts (`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`,`url`) VALUES (:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes,:url);";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue('system',$system,PDO::PARAM_STR);
-		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
-		$stmt->bindValue(':accountCreatedBy',$user,PDO::PARAM_STR);
-		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
-		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
-		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
-		$stmt->execute();
-		$accountId=$this->db->lastInsertId();
-		$this->addPassword($accountId,$password,$user);
+            $query = "INSERT INTO accounts (`system`,`accountName`,`accountCreatedBy`,`accountModified`,`accountModifiedBy`,`accountNotes`,`url`) VALUES (:system,:accountName,:accountCreatedBy,now(),:accountModifiedBy,:accountNotes,:url);";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue('system',$system,PDO::PARAM_STR);
+            $stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
+            $stmt->bindValue(':accountCreatedBy',$user,PDO::PARAM_STR);
+            $stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
+            $stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
+            $stmt->bindValue(':url',$url,PDO::PARAM_STR);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
+            $accountId=$this->db->lastInsertId();
+            $this->addPassword($accountId,$password,$user);
 	}
 	public function updateAccount($accountId, $system, $accountName, $accountNotes, $password, $user, $url) {
-		$query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now(), `url` = :url WHERE accounts.`accountId` = :accountId;";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-		$stmt->bindValue('system',$system,PDO::PARAM_STR);
-		$stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
-		$stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
-		$stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
-		$stmt->bindValue(':url',$url,PDO::PARAM_STR);
-		$stmt->execute();
-		$this->addPassword($accountId,$password,$user);
+            $query = "UPDATE `accounts` SET `system` = :system, `accountName` = :accountName, `accountNotes` = :accountNotes, `accountModifiedBy` = :accountModifiedBy, `accountModified` = now(), `url` = :url WHERE accounts.`accountId` = :accountId;";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+            $stmt->bindValue('system',$system,PDO::PARAM_STR);
+            $stmt->bindValue(':accountName',$accountName,PDO::PARAM_STR);
+            $stmt->bindValue(':accountModifiedBy',$user,PDO::PARAM_STR);
+            $stmt->bindValue(':accountNotes',base64_encode($accountNotes),PDO::PARAM_STR);
+            $stmt->bindValue(':url',$url,PDO::PARAM_STR);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
+            $this->addPassword($accountId,$password,$user);
 	}			
 	
 	public function addPassword($accountId,$password,$user){
-		if($password!=$this->getCurrentPassword($accountId)){
-			$query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
-			$stmt = $this->db->prepare($query);
-			$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-			$stmt->execute();
-			$query = "INSERT INTO `passwords` (`accountId`,`password`,`passwordCreatedBy`,`passwordActive`) VALUES (:accountId, :password, :user, 1);";
-			$stmt = $this->db->prepare($query);
-			$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-			$stmt->bindValue(':password','enc:'.$this->pwvEncrypt($password,$this->secret),PDO::PARAM_STR);
-			$stmt->bindValue(':user',$user,PDO::PARAM_STR);
-			$stmt->execute();
-		}
+            if($password!=$this->getCurrentPassword($accountId)){
+                $query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+                if($this->config->debug){
+                    error_log($stmt->queryString);
+                }
+                $stmt->execute();
+                $query = "INSERT INTO `passwords` (`accountId`,`password`,`passwordCreatedBy`,`passwordActive`) VALUES (:accountId, :password, :user, 1);";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+                $stmt->bindValue(':password','enc:'.$this->pwvEncrypt($password,$this->secret),PDO::PARAM_STR);
+                $stmt->bindValue(':user',$user,PDO::PARAM_STR);
+                if($this->config->debug){
+                    error_log($stmt->queryString);
+                }
+                $stmt->execute();
+            }
 	}	
 
 	public function deleteAccount($accountId) {
-		$query = "UPDATE `accounts` SET `accountDeleted`=true WHERE accountId=:accountId;";
-		$stmt = $this->db->prepare($query);
-		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
-		$stmt->execute();
+            $query = "UPDATE `accounts` SET `accountDeleted`=true WHERE accountId=:accountId;";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+            $stmt->execute();
 	}
 	
 	
