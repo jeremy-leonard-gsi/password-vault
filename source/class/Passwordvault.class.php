@@ -245,23 +245,56 @@ class Passwordvault {
 	}
         
         protected function updateACLs($accountId, $acls){
-            $removes = array_diff(explode(';',$this->config->groupDNs), (array)$acls);
+            $current = $this->getAccountACLs($accountId);
+            $this->deleteACL($accountId, array_intersect(array_diff(explode(';',$this->config->groupDNs), (array)$acls),$current));
+            $this->addACL($accountId,array_intersect(array_intersect(explode(';',$this->config->groupDNs),(array)$acls),$current));
+        }
+        
+        protected function addACL($accountId, $adds){
+            $query = "INSERT INTO acls (`accountId`,`group`) VALUES = (:accountId,:group);";
+            $stmt = $this->db->prepare($query);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+
+            foreach($adds as $dn){
+                $stmt->bindValue(':group',$dn);
+                $stmt->bindValue(':accountId',$accountId);
+                $stmt->execute();
+            }
+        }
+        
+        protected function deleteACL($accountId, $removes){
             $query = "DELETE FROM acls WHERE accountId=:accountId AND (";
-            foreach($removes as $key => $remove){
+            foreach($removes as $key => $dn){
                 $DNs[] .= "`group` = :group$key";
             }
             $query .= implode(' OR ',$DNs);
             $query .= ");";
             $stmt = $this->db->prepare($query);
-            foreach($removes as $key => $remove){
-                $stmt->bindValue(":group$key",$remove);
+            foreach($removes as $key => $dn){
+                $stmt->bindValue(":group$key",$dn);
             }
             if($this->config->debug){
                 error_log($stmt->queryString);
             }
-//            $stmt->execute();
+            $stmt->bindValue(':accountId',$accountId);
+            $stmt->execute();
         }
 
+        
+        
+        protected function getAccountACLs($accountId){
+            $query = "SELECT * FROM acls WHERE accountId=:accountId;";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':accountId',$accountId);
+            $stmt->execute();
+            $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($groups as $group){
+                $DNs[]=$group['group'];
+            }
+            return $DNs;
+        }
 
         public function addPassword($accountId,$password,$user){
             if($password!=$this->getCurrentPassword($accountId)){
