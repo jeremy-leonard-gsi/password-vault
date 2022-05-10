@@ -95,7 +95,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
                         account.configGroups.forEach(function(acl) {
                             if(account.userGroups.includes(acl)){
                                 acls += '<div class="form-check">';
-                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl;
+                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'"';
                                 if(account.acls.includes(acl)){
                                     acls += ' checked';
                                 }
