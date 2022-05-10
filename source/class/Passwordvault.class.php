@@ -1,10 +1,15 @@
 <?php
 
 class Passwordvault {
+    
+    protected $config;
+    private $secret;
+    private $db;
 
-	public function __construct($config) {
-		$this->secret = $config->pwvSecret;
-		$this->db = new PDO($config->pwvDSN,$config->pwvUser,base64_decode($config->pwvPassword));
+    public function __construct($config) {
+            $this->config = $config;
+            $this->secret = $config->pwvSecret;
+            $this->db = new PDO($config->pwvDSN,$config->pwvUser,base64_decode($config->pwvPassword));
 	}
 	
 	public function searchCompanies($companyName) {
@@ -23,6 +28,7 @@ class Passwordvault {
 	}	
 	
 	public function getAccounts($companyId=null) {
+            if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		if(is_null($companyId)) {
 			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false ORDER BY system,accountName;";
 			$stmt = $this->db->prepare($query);
@@ -31,6 +37,34 @@ class Passwordvault {
 			$stmt = $this->db->prepare($query);
 			$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
 		}
+            }else{
+		if(is_null($companyId)) {
+			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId  WHERE `accountDeleted` = false AND (";
+                        foreach($_SESSION['groups'] as $key => $group){
+                            $groups[] = "alcs.group=:group$key";
+                        }
+                        $query .= implode(' OR ', $groups);
+                        $query .= "ORDER BY system,accountName;";
+                        $query .= ");";
+			$stmt = $this->db->prepare($query);
+                        foreach($_SESSION['groups'] as $key => $group){
+                            $stmt->bindValue(":group$key",$group);
+                        }
+		}else{
+			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE `accountDeleted` = false AND `companyId` = :companyId AND (";
+                        foreach($_SESSION['groups'] as $key => $group){
+                            $groups[] = "alcs.group=:group$key";
+                        }
+                        $query .= implode(' OR ', $groups);
+                        $query .= "ORDER BY system,accountName;";
+                        $query .= ");";
+			$stmt = $this->db->prepare($query);
+                        foreach($_SESSION['groups'] as $key => $group){
+                            $stmt->bindValue(":group$key",$group);
+                        }
+			$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
+		}                
+            }
 		$stmt->execute();
 		$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		foreach($accounts as $key => $account){
