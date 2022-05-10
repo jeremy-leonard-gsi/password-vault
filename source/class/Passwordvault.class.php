@@ -246,8 +246,14 @@ class Passwordvault {
         
         protected function updateACLs($accountId, $acls){
             $current = $this->getAccountACLs($accountId);
-            $this->deleteACL($accountId, array_intersect(array_diff(explode(';',$this->config->groupDNs), (array)$acls),$current));
-            $this->addACL($accountId,array_intersect(array_intersect(explode(';',$this->config->groupDNs),(array)$acls),$current));
+            $removes = array_intersect(array_diff(explode(';',$this->config->groupDNs), (array)$acls),$current);
+            if(count($removes) > 0){
+                $this->deleteACL($accountId, $removes);
+            }
+            $adds = array_intersect(array_intersect(explode(';',$this->config->groupDNs),(array)$acls),$current);
+            if(count($adds) > 0){
+                $this->addACL($accountId,$adds);
+            }
         }
         
         protected function addACL($accountId, $adds){
@@ -266,6 +272,7 @@ class Passwordvault {
         
         protected function deleteACL($accountId, $removes){
             $query = "DELETE FROM acls WHERE accountId=:accountId AND (";
+            $DNs[];
             foreach($removes as $key => $dn){
                 $DNs[] .= "`group` = :group$key";
             }
