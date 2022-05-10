@@ -25,7 +25,8 @@ if($site->request->method=="POST"){
 									$site->request->post->accountNotes,
 									$site->request->post->accountPassword,
 									$_SESSION["username"],
-									$site->request->post->url);
+									$site->request->post->url,
+                                                                        $site->request->post->acls);
 			if(isset($site->request->apikey)) exit;
 			break;
 		case 'updatePassword':
@@ -122,7 +123,7 @@ include('menu.php');
 											</div>
 										</div>
 									</div>	
-									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes>?$key?>" onclick="advancedCopyTo('accountNotes<?$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
+									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes<?=$key?>" onclick="advancedCopyTo('accountNotes<?=$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
 									<div class="col col-1 pl-0 pl-md-4">
 										<button class="btn material-icons-outlined md-18 px-0 px-md-3" title="Show Details" data-accountid="<?=$password["accountId"]?>" data-toggle="modal" data-target="#accountInfo">info</button>											
 									</div>
@@ -245,6 +246,16 @@ include('menu.php');
 	      		<input id="accountId-Id" name="accountId" type="hidden">
 	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']??''?>">
 	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName??''?>">
+                        <ul class="nav nav-tabs mb-1" id="EditAccountTabId" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="editaccountinfo-tab" data-toggle="tab" href="#editaccountinfo" role="tab" aria-controls="editaccountinfo" aria-selected="true">Account Info</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="editaccesscontrol-tab" data-toggle="tab" href="#editaccesscontrol" role="tab" aria-controls="editaccesscontrol" aria-selected="false">Access Control</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="addedit-tabs">
+                            <div class="tab-pane fade show active" id="editaccountinfo" role="tabpanel" aria-labeledby="editaccountinfo-tab">
 	      		<div class="form-group row">
 	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="system-Id">System</label>
 	      			<div class="col-sm-9">
@@ -293,6 +304,13 @@ include('menu.php');
 		   	   		<textarea class="form-control" id="accountNotes-Id" name="accountNotes"></textarea>
 		      		</div>
 	      		</div>
+                        </div>
+                            <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
+                                <div id="editaccesscontrol-groups"></div>
+                                <hr>
+                                <p>Members of the group, <?=$site->config->globalAdminGroupDN?> can always see all passwords.</p><p>If no groups are checked on this screen only members of this admin groups will be able to see this account.</p>
+                            </div>
+                        </div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
