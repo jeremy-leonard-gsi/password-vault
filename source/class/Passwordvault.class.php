@@ -246,7 +246,20 @@ class Passwordvault {
         
         protected function updateACLs($accountId, $acls){
             $removes = array_diff(explode(';',$this->config->groupDNs), (array)$acls);
-            error_log(json_encode($removes,JSON_PRETTY_PRINT));
+            $query = "DELETE FROM acls WHERE accountId=:accountId AND (";
+            foreach($removes as $key => $remove){
+                $DNs[] .= "`group` = :group$key";
+            }
+            $query .= implode(' OR ',$DNs);
+            $query .= ");";
+            $stmt = $this->db->prepare($query);
+            foreach($removes as $key => $remove){
+                $stmt->bindValue(":group$key",$remove);
+            }
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }
+//            $stmt->execute();
         }
 
 
