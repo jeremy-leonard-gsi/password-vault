@@ -65,7 +65,10 @@ class Passwordvault {
 			$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
 		}                
             }
-		$stmt->execute();
+		if($this->config->debug){
+                    error_log($stmt->queryString);
+                }
+                $stmt->execute();
 		$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		foreach($accounts as $key => $account){
 			if(substr($account["password"],0,4)=='enc:') {
@@ -79,7 +82,12 @@ class Passwordvault {
 		
 	}
 	public function getAccountInfo($accountId) {
+            if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
+            }else{
+		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
+            
+            }
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':accountId',$accountId,PDO::PARAM_INT);
 		$stmt->execute();
