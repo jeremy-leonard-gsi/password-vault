@@ -241,9 +241,16 @@ class Passwordvault {
             }
             $stmt->execute();
             $this->addPassword($accountId,$password,$user);
-	}			
-	
-	public function addPassword($accountId,$password,$user){
+            $this->updateACLs($accountId, $acls);
+	}
+        
+        protected function updateACLs($accountId, $acls){
+            $removes = array_diff($acls, explode(';',$this->config->groupDNs));
+            error_log($removes);
+        }
+
+
+        public function addPassword($accountId,$password,$user){
             if($password!=$this->getCurrentPassword($accountId)){
                 $query = "UPDATE `passwords` SET passwordActive=false WHERE accountId=:accountId;";
                 $stmt = $this->db->prepare($query);
