@@ -245,7 +245,7 @@ class Passwordvault {
 	}
         
         protected function updateACLs($accountId, $acls){
-            $removes = array_diff($acls, explode(';',$this->config->groupDNs));
+            $removes = array_diff(explode(';',$this->config->groupDNs), (array)$acls);
             error_log($removes);
         }
 
