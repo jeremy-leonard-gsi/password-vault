@@ -10,6 +10,7 @@ class Passwordvault {
             $this->config = $config;
             $this->secret = $config->pwvSecret;
             $this->db = new PDO($config->pwvDSN,$config->pwvUser,base64_decode($config->pwvPassword));
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	public function searchCompanies($companyName) {
