@@ -125,7 +125,7 @@ class Passwordvault {
             $stmt->execute();
             $groups = $stmt->fetchAll();
             error_log(json_encode($groups, JSON_PRETTY_PRINT));
-            $accounts['acls']=$groups;
+            $accounts[0]['acls']=$groups;
             return $accounts;
 	}
 	public function getCurrentPassword($accountId) {
