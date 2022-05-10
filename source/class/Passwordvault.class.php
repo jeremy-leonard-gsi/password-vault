@@ -119,9 +119,9 @@ class Passwordvault {
 	}
 	public function getCurrentPassword($accountId) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
-		$query = "SELECT * FROM `passwords` WHERE accountid=:accountid AND passwordActive=true;";
+		$query = "SELECT * FROM `passwords` WHERE `passwords`.accountid=:accountid AND passwordActive=true;";
             }else{
-		$query = "SELECT * FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE accountid=:accountid AND passwordActive=true AND (";
+		$query = "SELECT * FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE `passwords`.accountid=:accountid AND passwordActive=true AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
                 }
