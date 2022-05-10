@@ -257,7 +257,7 @@ class Passwordvault {
         }
         
         protected function addACL($accountId, $adds){
-            $query = "INSERT INTO acls (`accountId`,`group`) VALUES = (:accountId,:group);";
+            $query = "INSERT INTO acls (`accountId`,`group`) VALUES (:accountId,:group);";
             $stmt = $this->db->prepare($query);
             if($this->config->debug){
                 error_log($stmt->queryString);
