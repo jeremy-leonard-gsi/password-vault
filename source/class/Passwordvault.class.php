@@ -102,6 +102,9 @@ class Passwordvault {
             }
             $stmt->execute();
             $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if($this->config->debug){
+                error_log($stmt->rowCount());
+            }
             foreach($accounts as $key => $account){
                 if(substr($account['password'],0,4)=='enc:') {
                     $accounts[$key]['password']=htmlentities($this->pwvDecrypt(substr($account['password'],4),$this->secret));
