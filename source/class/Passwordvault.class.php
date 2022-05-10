@@ -150,7 +150,21 @@ class Passwordvault {
 	}
 
 	public function getPasswordHistory($accountId) {
+            if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM `passwords` WHERE accountid=:accountid ORDER BY passwordCreated DESC;";
+            }else{
+		$query = "SELECT * FROM `passwords` LEFT JOIN acls ON `passwords`.accountId=acls.accountId WHERE `passwords`.accountid=:accountid AND (";
+                foreach($_SESSION['groups'] as $key => $group){
+                    $groups[] = "acls.group=:group$key";
+                }
+                $query .= implode(' OR ', $groups);
+                $query .= ") ORDER BY passwordCreated DESC;";
+                $stmt = $this->db->prepare($query);
+                foreach($_SESSION['groups'] as $key => $group){
+                    $stmt->bindValue(":group$key",$group);
+                }
+                
+            }
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
 		$stmt->execute();
