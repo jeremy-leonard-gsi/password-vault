@@ -41,7 +41,7 @@ class Passwordvault {
 		if(is_null($companyId)) {
 			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId  WHERE `accountDeleted` = false AND (";
                         foreach($_SESSION['groups'] as $key => $group){
-                            $groups[] = "alcs.group=:group$key";
+                            $groups[] = "acls.group=:group$key";
                         }
                         $query .= implode(' OR ', $groups);
                         $query .= ") ";
@@ -53,7 +53,7 @@ class Passwordvault {
 		}else{
 			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE `accountDeleted` = false AND `companyId` = :companyId AND (";
                         foreach($_SESSION['groups'] as $key => $group){
-                            $groups[] = "alcs.group=:group$key";
+                            $groups[] = "acls.group=:group$key";
                         }
                         $query .= implode(' OR ', $groups);
                         $query .= ") ";
