@@ -307,8 +307,8 @@ include('menu.php');
                             <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
                                 <?php
                                 foreach(array_intersect(explode(';',$site->config->groupDNs),$_SESSION['groups']) as $group){
-                                    echo sprintf('<input class="form-check-input" type="checkbox" value="" id="%s">',$group,$group);
-                                    echo sprintf('<label class="form-check-label" for="%s">%s</label>',$group);
+                                    echo sprintf('<input class="form-check-input" type="checkbox" value="" id="%s">',$group);
+                                    echo sprintf('<label class="form-check-label" for="%s">%s</label>',$group,$group);
                                 }
                                 ?>
                             </div>
