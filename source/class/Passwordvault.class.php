@@ -127,7 +127,7 @@ class Passwordvault {
             error_log(json_encode($groups, JSON_PRETTY_PRINT));
             $accounts[0]['acls']=$groups;
             $accounts[0]['userGroups']=$_SESSION['groups'];
-            $accounts[0]['configGroups']=$this->config->groupDNs;
+            $accounts[0]['configGroups']=explode(';',$this->config->groupDNs);
             return $accounts;
 	}
 	public function getCurrentPassword($accountId) {
