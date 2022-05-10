@@ -305,14 +305,6 @@ include('menu.php');
 	      		</div>
                         </div>
                             <div class="tab-pane fade" id="editaccesscontrol" role="tabpanel" aria-labeledby="editaccesscontrol-tab">
-                                <?php
-                                foreach(array_intersect(explode(';',$site->config->groupDNs),$_SESSION['groups']) as $group){
-                                    echo '<div class="form-check">';
-                                    echo sprintf('<input class="form-check-input" type="checkbox" name="acl[]" value="%s" id="%s">',$group,$group);
-                                    echo sprintf('<label class="form-check-label" for="%s">%s</label>',$group,$group);
-                                    echo '</div>';
-                                }
-                                ?>
                             </div>
                         </div>
 		      </div>
