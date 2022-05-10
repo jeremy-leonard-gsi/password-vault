@@ -90,7 +90,9 @@ switch($site->request->method) {
                         unset($_SESSION[$key]);	
                     }
                     $_SESSION['authenticated']=false;
-                    error_log($site->config->base."/");
+                    if($site->debug){
+                        error_log($site->config->base."/");
+                    }
                     header("Location: ".$site->config->base."/");
                     exit;
                 break;
