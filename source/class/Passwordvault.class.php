@@ -85,7 +85,7 @@ class Passwordvault {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
             }else{
-		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId AND ";
+		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
                 }
