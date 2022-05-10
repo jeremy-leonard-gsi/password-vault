@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4deb2
+-- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 02, 2022 at 04:22 PM
--- Server version: 10.5.15-MariaDB-0+deb11u1
--- PHP Version: 7.4.28
+-- Host: localhost
+-- Generation Time: May 10, 2022 at 09:15 PM
+-- Server version: 10.5.12-MariaDB
+-- PHP Version: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -40,9 +41,17 @@ CREATE TABLE `accounts` (
   `accountDeleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `accounts`
+-- Table structure for table `acls`
 --
+
+CREATE TABLE `acls` (
+  `aclId` bigint(20) NOT NULL,
+  `accountId` bigint(20) NOT NULL,
+  `group` varchar(512) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -60,23 +69,25 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`key`, `value`) VALUES
-('apikey', NULL),
-('authLDAPBaseDN', ''),
-('authLDAPBindDN', ''),
-('authLDAPFilter', '(&(objectclass=user)(!(objectclass=computer))(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))'),
-('authLDAPFullnameAttribute', 'displayname'),
-('authLDAPSecret', ''),
-('authLDAPURI', ''),
+('authLDAPBaseDN', NULL),
+('authLDAPBindDN', NULL),
+('authLDAPFilter', NULL),
+('authLDAPFullnameAttribute', NULL),
+('authLDAPSecret', NULL),
+('authLDAPURI', NULL),
 ('authLDAPUserAttribute', 'samaccountname'),
-('globalAdminGroupDN','CN=Domain Admins,CN=Users,DC=domain,DC=com'),
-('groupDNs'),''),
 ('authType', 'LDAP'),
-('base', '/password-vault'),
-('enableAPI', '0'),
-('logoURI', ''),
-('pwvPassword', ''),
-('requireSSL', '1'),
-('title', 'Password Vault');
+('base', '/pwv-dev'),
+('debug', '1'),
+('globalAdminGroupDN', NULL),
+('groupDNs', NULL),
+('logoURI', 'images/logo.png'),
+('pwvDSN', NULL),
+('pwvPassword', NULL),
+('pwvUser', NULL),
+('requireSSL', NULL),
+('title', 'Password Vault'),
+('userSource', 'LDAP');
 
 -- --------------------------------------------------------
 
@@ -94,10 +105,6 @@ CREATE TABLE `passwords` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `passwords`
---
-
---
 -- Indexes for dumped tables
 --
 
@@ -106,6 +113,13 @@ CREATE TABLE `passwords` (
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`accountId`);
+
+--
+-- Indexes for table `acls`
+--
+ALTER TABLE `acls`
+  ADD PRIMARY KEY (`aclId`),
+  ADD UNIQUE KEY `accountId` (`accountId`,`group`);
 
 --
 -- Indexes for table `config`
@@ -128,17 +142,29 @@ ALTER TABLE `passwords`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `accountId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `acls`
+--
+ALTER TABLE `acls`
+  MODIFY `aclId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `passwords`
 --
 ALTER TABLE `passwords`
-  MODIFY `passwordId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `passwordId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `acls`
+--
+ALTER TABLE `acls`
+  ADD CONSTRAINT `acls_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `accounts` (`accountId`);
 
 --
 -- Constraints for table `passwords`
