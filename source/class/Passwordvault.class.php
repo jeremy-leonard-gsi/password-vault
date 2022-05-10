@@ -44,8 +44,8 @@ class Passwordvault {
                             $groups[] = "alcs.group=:group$key";
                         }
                         $query .= implode(' OR ', $groups);
+                        $query .= ") ";
                         $query .= "ORDER BY system,accountName;";
-                        $query .= ");";
 			$stmt = $this->db->prepare($query);
                         foreach($_SESSION['groups'] as $key => $group){
                             $stmt->bindValue(":group$key",$group);
@@ -56,8 +56,8 @@ class Passwordvault {
                             $groups[] = "alcs.group=:group$key";
                         }
                         $query .= implode(' OR ', $groups);
+                        $query .= ") ";
                         $query .= "ORDER BY system,accountName;";
-                        $query .= ");";
 			$stmt = $this->db->prepare($query);
                         foreach($_SESSION['groups'] as $key => $group){
                             $stmt->bindValue(":group$key",$group);
