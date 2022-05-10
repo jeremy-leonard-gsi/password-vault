@@ -31,16 +31,16 @@ class Passwordvault {
 	public function getAccounts($companyId=null) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
 		if(is_null($companyId)) {
-			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false ORDER BY system,accountName;";
+			$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false ORDER BY system,accountName;";
 			$stmt = $this->db->prepare($query);
 		}else{
-			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false AND `companyId` = :companyId ORDER BY accountName;";
+			$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE `accountDeleted` = false AND `companyId` = :companyId ORDER BY accountName;";
 			$stmt = $this->db->prepare($query);
 			$stmt->bindValue(':companyId',$companyId,PDO::PARAM_INT);
 		}
             }else{
 		if(is_null($companyId)) {
-			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId  WHERE `accountDeleted` = false AND (";
+			$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId  WHERE `accountDeleted` = false AND (";
                         foreach($_SESSION['groups'] as $key => $group){
                             $groups[] = "acls.group=:group$key";
                         }
@@ -52,7 +52,7 @@ class Passwordvault {
                             $stmt->bindValue(":group$key",$group);
                         }
 		}else{
-			$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE `accountDeleted` = false AND `companyId` = :companyId AND (";
+			$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE `accountDeleted` = false AND `companyId` = :companyId AND (";
                         foreach($_SESSION['groups'] as $key => $group){
                             $groups[] = "acls.group=:group$key";
                         }
@@ -84,10 +84,10 @@ class Passwordvault {
 	}
 	public function getAccountInfo($accountId) {
             if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
-		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
+		$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 WHERE accounts.accountId=:accountId;";
                 $stmt = $this->db->prepare($query);
             }else{
-		$query = "SELECT * FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE accounts.accountId=:accountId AND (";
+		$query = "SELECT DISTINCT accounts.*,passwords.* FROM accounts LEFT JOIN passwords ON accounts.accountId=passwords.accountId AND passwordActive=1 LEFT JOIN acls ON accounts.accountId=acls.accountId WHERE accounts.accountId=:accountId AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
                 }
@@ -133,7 +133,7 @@ class Passwordvault {
 		$query = "SELECT * FROM `passwords` WHERE `passwords`.accountid=:accountid AND passwordActive=true;";
                 $stmt = $this->db->prepare($query);
             }else{
-		$query = "SELECT * FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE `passwords`.accountid=:accountid AND passwordActive=true AND (";
+		$query = "SELECT passwords.* FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE `passwords`.accountid=:accountid AND passwordActive=true AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
                 }
@@ -166,7 +166,7 @@ class Passwordvault {
 		$query = "SELECT * FROM `passwords` WHERE accountid=:accountid ORDER BY passwordCreated DESC;";
                 $stmt = $this->db->prepare($query);
             }else{
-		$query = "SELECT * FROM `passwords` LEFT JOIN acls ON `passwords`.accountId=acls.accountId WHERE `passwords`.accountid=:accountid AND (";
+		$query = "SELECT passwords.* FROM `passwords` LEFT JOIN acls ON `passwords`.accountId=acls.accountId WHERE `passwords`.accountid=:accountid AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
                 }
