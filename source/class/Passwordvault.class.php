@@ -124,6 +124,7 @@ class Passwordvault {
             }            
             $stmt->execute();
             $groups = $stmt->fetchAll();
+            $accounts[0]['acls']=array();
             foreach($groups as $group){
                 $accounts[0]['acls'][]=$group['group'];
             }
