@@ -119,8 +119,12 @@ class Passwordvault {
             $query = "SELECT `group` FROM acls WHERE accountId=:accountId;";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(":accountId", $accountId);
+            if($this->config->debug){
+                error_log($stmt->queryString);
+            }            
             $stmt->execute();
             $groups = $stmt->fetchAll();
+            error_log(json_encode($groups, JSON_PRETTY_PRINT));
             $accounts['acls']=$groups;
             return $accounts;
 	}
