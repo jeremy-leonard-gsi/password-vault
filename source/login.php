@@ -21,7 +21,7 @@ switch($site->request->method) {
                             $alert->setMessage(ldap_error($ds));
                         }else{
                             $filter = "(&".$site->config->authLDAPFilter."(".$site->config->authLDAPUserAttribute."=".$site->request->post->username.")(|";
-                                foreach(explode(';',$site->config->GroupDNs) AS $GroupDN){
+                                foreach(explode(';',$site->config->groupDNs) AS $GroupDN){
                                     $filter .="(memberof=$GroupDN)";
                                 }
                             $filter .= "))";
