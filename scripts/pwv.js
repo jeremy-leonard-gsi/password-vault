@@ -98,7 +98,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
                             acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
                             acls += '</div>';
                         });
-                        $( '#editaccesscontrol' ).html(acls);
+                        $( '#editaccesscontrol-groups' ).html(acls);
 		});
 	}
 });
