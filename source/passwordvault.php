@@ -245,7 +245,7 @@ include('menu.php');
 	      		<input id="accountId-Id" name="accountId" type="hidden">
 	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']??''?>">
 	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName??''?>">
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs mb-1">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#">Account Info</a>
                             </li>
