@@ -124,8 +124,9 @@ class Passwordvault {
             }            
             $stmt->execute();
             $groups = $stmt->fetchAll();
-            error_log(json_encode($groups, JSON_PRETTY_PRINT));
-            $accounts[0]['acls']=$groups;
+            foreach($groups as $group){
+                $accounts[0]['acls'][]=$group['group'];
+            }
             $accounts[0]['userGroups']=$_SESSION['groups'];
             $accounts[0]['configGroups']=explode(';',$this->config->groupDNs);
             return $accounts;
