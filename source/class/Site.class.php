@@ -9,6 +9,7 @@ class Site extends SiteObject{
 	public function __construct($_CONFIG) {
 		$this->request = new Request($_CONFIG);
 		$this->config = $this->request->config;
+                $this->debug=$this->config->debug ?? false;
 	}
 	
 	public function validateAPI() {

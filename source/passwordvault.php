@@ -122,7 +122,7 @@ include('menu.php');
 											</div>
 										</div>
 									</div>	
-									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes>?$key?>" onclick="advancedCopyTo('accountNotes<?$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
+									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes<?=$key?>" onclick="advancedCopyTo('accountNotes<?=$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
 									<div class="col col-1 pl-0 pl-md-4">
 										<button class="btn material-icons-outlined md-18 px-0 px-md-3" title="Show Details" data-accountid="<?=$password["accountId"]?>" data-toggle="modal" data-target="#accountInfo">info</button>											
 									</div>
