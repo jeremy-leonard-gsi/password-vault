@@ -245,6 +245,14 @@ include('menu.php');
 	      		<input id="accountId-Id" name="accountId" type="hidden">
 	      		<input id="customerId" name="customerId" type="hidden" value="<?=$site->system[0]['companyId']??''?>">
 	      		<input id="addEdit-customerName-Id" name="customerName" type="hidden" value="<?=$site->request->post->systemName??''?>">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Account Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Access Control</a>
+                            </li>
+                        </ul>
 	      		<div class="form-group row">
 	      			<label class="col-sm-3 col-form-label col-form-label-sm" for="system-Id">System</label>
 	      			<div class="col-sm-9">
