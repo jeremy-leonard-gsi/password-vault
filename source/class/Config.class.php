@@ -36,7 +36,7 @@ class Config extends SiteObject{
         }
         
         public function __get($name) {
-            error_log($name);
+            error_log("Property: $name");
             $encodedValues = [
                 'authLDAPSecret',
                 'pwvPassword'
