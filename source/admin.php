@@ -9,10 +9,10 @@ if($site->request->method=='POST'){
     foreach($site->request->post->config as $key => $value){
         $site->config->$key=$value;
     }
-        $site->config->saveConfig();
+    $site->config->saveConfig();
+    header("Location: ".$_SERVER['REQUEST_URI']);
 }
 
-header("Location: ".$_SERVER['REQUEST_URI']);
 
 include 'header.php';
 include 'menu.php';
