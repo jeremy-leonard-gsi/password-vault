@@ -12,6 +12,8 @@ if($site->request->method=='POST'){
         $site->config->saveConfig();
 }
 
+header("Location: ".$_SERVER['REQUEST_URI']);
+
 include 'header.php';
 include 'menu.php';
 
