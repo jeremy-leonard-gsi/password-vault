@@ -13,7 +13,11 @@
 		<div class="dropdown">
 			<button class="btn pl-2 material-icons-outlined md-36 md-light md-inactive" data-toggle="dropdown" type="button">account_circle</button>
 			<div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="<?=$site->config->base?>">Password Vault</a> 
+                                <?php
+                                    if(in_array($site->config->globalAdminGroupDN, $_SESSION['groups'])){
+                                       echo '<a class="dropdown-item" href="<?=$site->config->base?>">Password Vault</a>\n';
+                                    }
+                                    ?>
                                 <a class="dropdown-item" href="<?=$site->config->base?>/admin">Admin</a> 
 				<form method="post" action="<?=$site->config->base?>/login">
 					<input type="hidden" name="action" value="logout">
