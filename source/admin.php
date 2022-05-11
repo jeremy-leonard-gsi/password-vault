@@ -19,7 +19,7 @@ foreach($site->config->encodedFields as $key){
 ksort($keys);
 ?>
 <form method="post">
-    <table class="table">
+    <table class="table table-sm">
         <tr><th>Key</th><th>Value</th></tr>
         <?php
             foreach($keys as $key => $value){
