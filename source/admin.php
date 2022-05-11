@@ -11,6 +11,7 @@ foreach($site->config->encodedFields as $key){
     $keys[$key]=$site->config->$key;
 }
 
+sort($keys);
 echo '<table class="table">';
 
 foreach($keys as $key => $value){
