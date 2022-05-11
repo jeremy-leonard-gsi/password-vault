@@ -3,8 +3,11 @@
 class Config extends SiteObject{
 
 	private $db;
+        private $pwvPassword;
+        private $pwvSecret;
+        private $authLDAPSecret;
 
-	public function __construct($_CONFIG) {
+    public function __construct($_CONFIG) {
 		$this->write($_CONFIG);
 		$this->db = new PDO($this->configDSN,$this->configUsername, $this->configPassword);
 		$this->readConfig();
@@ -18,6 +21,9 @@ class Config extends SiteObject{
 			$this->write([$config['key']=>$config['value']]);		
 		}
 	}
+        public function __set($name, $value) {
+            $this->$name=$value;
+        }
         
         public function __get($name) {
             $encodedValues = [
