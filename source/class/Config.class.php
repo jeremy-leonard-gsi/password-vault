@@ -40,6 +40,7 @@ class Config extends SiteObject{
             'authLDAPSecret',
             'pwvPassword'
         ];
+        $this->saveConfig();
     }
 	private function readConfig(){
             if($this->debug){
@@ -51,7 +52,6 @@ class Config extends SiteObject{
             foreach($_CONFIG as $config){
                     $this->write([$config['key']=>$config['value']]);		
             }
-            $this->saveConfig();
 	}
         public function saveConfig(){
             $query = "INSERT INTO config (`key`,`value`) VALUES (:key,:value1) ON DUPLICATE KEY UPDATE `value`=:value2;";
