@@ -18,12 +18,15 @@ class Config extends SiteObject{
         ];
     }
 	private function readConfig(){
-		$query = "SELECT * FROM config";
-		$stmt = $this->db->query($query);
-		$_CONFIG = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($_CONFIG as $config){
-			$this->write([$config['key']=>$config['value']]);		
-		}
+            if($this->debug){
+                error_log("Reading config from database");
+            }
+            $query = "SELECT * FROM config";
+            $stmt = $this->db->query($query);
+            $_CONFIG = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($_CONFIG as $config){
+                    $this->write([$config['key']=>$config['value']]);		
+            }
 	}
         public function __get($name) {
             error_log("Property: $name");
