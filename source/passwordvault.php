@@ -16,31 +16,35 @@ if($site->request->method=="POST"){
 			break;
 		case 'addAccount':
 			$pwv->addAccount($site->request->post->system,
-									$site->request->post->accountName,
-									$site->request->post->accountNotes,
-									$site->request->post->accountPassword,
-									$_SESSION["username"],
-									$site->request->post->url);
+                            $site->request->post->accountName,
+                            $site->request->post->accountNotes,
+                            $site->request->post->accountPassword,
+                            $_SESSION["username"],
+                            $site->request->post->url);
+                        header("Location: ".$site->config->base);
 			break;
 		case 'updateAccount':
 			$pwv->updateAccount($site->request->post->accountId,
-									$site->request->post->system,
-									$site->request->post->accountName,
-									$site->request->post->accountNotes,
-									$site->request->post->accountPassword,
-									$_SESSION["username"],
-									$site->request->post->url,
-                                                                        $site->request->post->acls);
-			if(isset($site->request->apikey)) exit;
+                            $site->request->post->system,
+                            $site->request->post->accountName,
+                            $site->request->post->accountNotes,
+                            $site->request->post->accountPassword,
+                            $_SESSION["username"],
+                            $site->request->post->url,
+                            $site->request->post->acls);
+                        if(isset($site->request->apikey)) exit;
+                        header("Location: ".$site->config->base);
 			break;
 		case 'updatePassword':
 			$pwv->addPassword($site->request->post->accountId,
-									$site->request->post->accountPassword,
-									$_SESSION["username"]);
+                            $site->request->post->accountPassword,
+                            $_SESSION["username"]);
 			if(isset($site->request->apikey)) exit;
+                        header("Location: ".$site->config->base);
 			break;
 		case 'deleteAccount':
 			$pwv->deleteAccount($site->request->post->accountId);
+                        header("Location: ".$site->config->base);
 			break;
 		case 'import':
 			if(isset($_FILES) 
@@ -52,6 +56,7 @@ if($site->request->method=="POST"){
 			) {
 				$pwv->importCSV($_FILES['CSVFile']);
 			}
+                        break;
 	}
 }
 if(isset($site->request->get->export)){
