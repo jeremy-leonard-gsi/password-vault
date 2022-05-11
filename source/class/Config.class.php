@@ -2,7 +2,7 @@
 
 class Config extends SiteObject{
 
-	public $db;
+	private $db;
 
 	public function __construct($_CONFIG) {
 		$this->write($_CONFIG);
