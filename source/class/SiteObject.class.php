@@ -1,7 +1,6 @@
 <?php
 
-class SiteObject {
-
+class SiteObject {    
 	public function write($array) {
 		foreach($array as $key => $value){
 			if(is_array($value)) {
@@ -14,6 +13,10 @@ class SiteObject {
 	}
         
         public function __get($name) {
-            return $this->name ?? false;
+            return $this->$name ?? false;
         }
+        
+       public function __set($name, $value) {
+           $this->$name=$value;
+       }
 }
