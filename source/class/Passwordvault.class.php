@@ -9,7 +9,7 @@ class Passwordvault {
     public function __construct($config) {
             $this->config = $config;
             $this->secret = $config->pwvSecret;
-            $this->db = new PDO($config->pwvDSN,$config->pwvUser,base64_decode($config->pwvPassword));
+            $this->db = new PDO($config->pwvDSN,$config->pwvUser,$config->pwvPassword);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
