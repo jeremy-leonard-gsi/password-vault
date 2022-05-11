@@ -18,7 +18,7 @@ class Config extends SiteObject{
         ];
     }
 	private function readConfig(){
-            if($this->debug){
+            if($this->properties['debug']){
                 error_log("Reading config from database");
             }
             $query = "SELECT * FROM config";
