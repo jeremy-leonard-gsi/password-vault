@@ -33,6 +33,23 @@ class Config extends SiteObject{
                     $this->write([$config['key']=>$config['value']]);		
             }
 	}
+        public function saveConfig(){
+            $query = "INSERT INTO config (`key`,`value`) VALUES (:key,:value1) ON DUPLICATE KEY UPDATE `value`=:value2;";
+            $stmt = $this->db->prepare($query);
+            foreach($this as $key => $value){
+                if(!in_array($key, $this->hiddenFields)){
+                    $stmt->bindValue(':key',$key);
+                    if(in_array($key, $this->encodedFields)){
+                        $stmt->bindValue(':value1',base64_encode($value));
+                        $stmt->bindValue(':value2',base64_encode($value));
+                    }else{
+                        $stmt->bindValue(':value1',$value);
+                        $stmt->bindValue(':value2',$value);
+                    }
+                    $stmt->execute();
+                }
+            }
+        }
         public function __get($name) {
             error_log("Property: $name");
             if(in_array($name, $this->encodedFields)){
