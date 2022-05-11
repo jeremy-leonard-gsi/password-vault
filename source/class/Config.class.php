@@ -18,4 +18,17 @@ class Config extends SiteObject{
 			$this->write([$config['key']=>$config['value']]);		
 		}
 	}
+        
+        public function __get($name) {
+            $encodedValues = [
+                'pwvSecret',
+                'authLDAPSecret',
+                'pwvPassword'
+            ];
+            if(in_array($name, $encodedValues)){
+                return base64_decode($this->$name) ?? false;
+            }else{
+                parent::__get($name);
+            }
+        }
 }
