@@ -25,7 +25,7 @@ ksort($keys);
                 echo addFormElement($key, $value);
             }
        ?>
-        <input class="form-control form-control-sm" type="submit" value="Save">
+        <input class="btn btn-primary btn-sm" type="submit" value="Save">
     </form>
 </div>
 <?php
@@ -35,7 +35,7 @@ function addFormElement($key,$value){
     $output = <<<END
         <div class="form-group">
             <label for="%sId">%s</label>
-            <input class="btn btn-sm" type="text" id="%sId" name="config[%s]" value="%s">
+            <input class="form-control form-control-sm" type="text" id="%sId" name="config[%s]" value="%s">
         </div>
     END;
     return sprintf($output,$key,$key,$key,$key,$value);
