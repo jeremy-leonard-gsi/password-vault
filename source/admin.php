@@ -17,11 +17,16 @@ foreach($site->config->encodedFields as $key){
 }
 
 ksort($keys);
-echo '<table class="table">';
-
-foreach($keys as $key => $value){
-   echo sprintf('<tr><th>%s</th><td>%s</td></tr>',$key,$value);
-}
-echo '</table>';
-
+?>
+<form method="post">
+    <table class="table">
+        <tr><th>Key</th><th>Value</th></tr>
+        <?php
+            foreach($keys as $key => $value){
+               echo sprintf('<tr><th>%s</th><td><input class="form-control" type="text" name="%s" value="%s"></td></tr>',$key,$key,$value);
+            }
+       ?>
+    </table>
+</form>
+<?php
 include 'footer.php';
