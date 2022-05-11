@@ -3,7 +3,7 @@ include 'header.php';
 include 'menu.php';
 
 foreach($site->config as $key => $value){
-    if(!is_array($value)){
+    if(!is_array($value) AND !in_array($key, $site->config->hiddenFields)){
         $keys[$key] = $value;
     }
 }
