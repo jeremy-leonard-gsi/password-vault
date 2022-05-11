@@ -78,50 +78,46 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 	var accountid = button.data('accountid');
 	var action = button.data('action');
 	if (action=='addAccount') {
-			$( '#addEditActionId' ).val('addAccount');
-			$( '#accountId-Id' ).val('');
-			$( '#url-Id' ).val('');
-			$( '#system-Id' ).val('');
-			$( '#accountName-Id' ).val('');
-			$( '#password-Id' ).val('');
-			$( '#accountNotes-Id' ).val('');
-                        $( '#editaccesscontrol-groups' ).html('');
-                        acls='';
-                        account.configGroups.forEach(function(acl) {
-                            if(account.userGroups.includes(acl)){
-                                acls += '<div class="form-check">';
-                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'"';
-                                acls += '>';
-                                acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
-                                acls += '</div>';
-                            }
-                        });
-                        $( '#editaccesscontrol-groups' ).html(acls);		
+            $.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
+                account = JSON.parse(data);
+                $( '#addEditActionId' ).val('addAccount');
+                $( '#accountId-Id' ).val('');
+                $( '#url-Id' ).val('');
+                $( '#system-Id' ).val('');
+                $( '#accountName-Id' ).val('');
+                $( '#password-Id' ).val('');
+                $( '#accountNotes-Id' ).val('');
+                $( '#editaccesscontrol-groups' ).html(buildGroups(account));
+            });
 	}else{
-		$.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
-			account = JSON.parse(data);
-			$( '#addEditActionId' ).val('updateAccount');
-			$( '#accountId-Id' ).val(account.accountId);
-			$( '#url-Id' ).val(account.url);
-			$( '#system-Id' ).val(account.system);
-			$( '#accountName-Id' ).val(account.accountName);
-			$( '#password-Id' ).val(account.password);
-			$( '#accountNotes-Id' ).val(account.accountNotes);
-                        $( '#editaccesscontrol-groups' ).html('');
-                        acls='';
-                        account.configGroups.forEach(function(acl) {
-                            if(account.userGroups.includes(acl)){
-                                acls += '<div class="form-check">';
-                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'"';
-                                if(account.acls.includes(acl)){
-                                    acls += ' checked';
-                                }
-                                acls += '>';
-                                acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
-                                acls += '</div>';
-                            }
-                        });
-                        $( '#editaccesscontrol-groups' ).html(acls);
-		});
+            $.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
+                account = JSON.parse(data);
+                $( '#addEditActionId' ).val('updateAccount');
+                $( '#accountId-Id' ).val(account.accountId);
+                $( '#url-Id' ).val(account.url);
+                $( '#system-Id' ).val(account.system);
+                $( '#accountName-Id' ).val(account.accountName);
+                $( '#password-Id' ).val(account.password);
+                $( '#accountNotes-Id' ).val(account.accountNotes);
+                $( '#editaccesscontrol-groups' ).html(buildGroups(account));
+            });
 	}
 });
+
+function buildGroups(account){
+    acls='';
+    account.configGroups.forEach(function(acl) {
+        if(account.userGroups.includes(acl)){
+            acls += '<div class="form-check">';
+            acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'"';
+            if(account.acls.includes(acl)){
+                acls += ' checked';
+            }
+            acls += '>';
+            acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
+            acls += '</div>';
+        }
+    });
+    
+    return acls;
+}
