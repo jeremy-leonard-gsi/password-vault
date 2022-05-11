@@ -2,6 +2,8 @@
 include 'header.php';
 include 'menu.php';
 
+print_r($site->config);
+
 echo '<table class="table">';
 
 foreach($site->config as $key => $value){
