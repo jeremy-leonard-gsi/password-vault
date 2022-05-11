@@ -19,14 +19,21 @@ foreach($site->config->encodedFields as $key){
 ksort($keys);
 ?>
 <form method="post">
-    <table class="table table-sm">
-        <tr><th>Key</th><th>Value</th></tr>
-        <?php
-            foreach($keys as $key => $value){
-               echo sprintf('<tr><th>%s</th><td><input class="form-control" type="text" name="%s" value="%s"></td></tr>',$key,$key,$value);
-            }
-       ?>
-    </table>
+    <?php
+        foreach($keys as $key => $value){
+            echo addFormElement($key, $value);
+        }
+   ?>
 </form>
 <?php
 include 'footer.php';
+
+function addFormElement($key,$value){
+    $output = <<<END
+        <div class="form-group">
+            <label for="%sId">%s</label>
+            <input class="form-control" type="text" id="%sId" name="%s" value="%s">
+        </div>
+    END;
+    return sprintf($output,$key,$key,$key,$key,$value);
+}
