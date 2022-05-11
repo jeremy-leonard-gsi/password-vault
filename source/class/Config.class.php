@@ -40,7 +40,7 @@ class Config extends SiteObject{
             'authLDAPSecret',
             'pwvPassword'
         ];
-        $this->saveConfig();
+//        $this->saveConfig();
     }
 	private function readConfig(){
             if($this->debug){
