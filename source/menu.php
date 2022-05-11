@@ -15,7 +15,7 @@
 			<div class="dropdown-menu dropdown-menu-right">
                                 <?php
                                     if(in_array($site->config->globalAdminGroupDN, $_SESSION['groups'])){
-                                       echo '<a class="dropdown-item" href="<?=$site->config->base?>">Password Vault</a>\n';
+                                       echo '<a class="dropdown-item" href="<?=$site->config->base?>">Password Vault</a>';
                                     }
                                     ?>
                                 <a class="dropdown-item" href="<?=$site->config->base?>/admin">Admin</a> 
