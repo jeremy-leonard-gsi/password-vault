@@ -57,6 +57,7 @@ class Config extends SiteObject{
             $stmt = $this->db->prepare($query);
             foreach($this as $key => $value){
                 if(!in_array($key, $this->hiddenFields)){
+                    error_log(sprintf("Key: %s, Value: %s",$key, $value));
                     $stmt->bindValue(':key',$key);
                     if(in_array($key, $this->encodedFields)){
                         $stmt->bindValue(':value1',base64_encode($value));
