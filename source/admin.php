@@ -1,4 +1,9 @@
 <?php
+
+if(!in_array($site->config->globalAdminGroupDN,$_SESSION['groups'])){
+    include('unknownmodule.php');
+    exit;
+}
 include 'header.php';
 include 'menu.php';
 
