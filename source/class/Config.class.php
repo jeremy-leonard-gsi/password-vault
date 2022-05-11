@@ -41,6 +41,7 @@ class Config extends SiteObject{
                 'pwvPassword'
             ];
             if(in_array($name, $encodedValues)){
+                error_log($name);
                 return base64_decode($this->$name) ?? false;
             }else{
                 return $this->$name ?? false;
