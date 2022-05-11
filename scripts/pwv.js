@@ -80,6 +80,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 	if (action=='addAccount') {
             $.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
                 account = JSON.parse(data);
+                console.log(account);
                 $( '#addEditActionId' ).val('addAccount');
                 $( '#accountId-Id' ).val('');
                 $( '#url-Id' ).val('');
