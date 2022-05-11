@@ -57,7 +57,7 @@ class Config extends SiteObject{
             $query = "INSERT INTO config (`key`,`value`) VALUES (:key,:value1) ON DUPLICATE KEY UPDATE `value`=:value2;";
             $stmt = $this->db->prepare($query);
             foreach($this as $key => $value){
-                if(!in_array($key, $this->hiddenFields) AND !is_array($value)){
+                if(!is_array($value) AND !in_array($key, $this->hiddenFields)){
                     error_log(sprintf("Key: %s, Value: %s",$key, $value));
                     $stmt->bindValue(':key',$key);
                     if(in_array($key, $this->encodedFields)){
