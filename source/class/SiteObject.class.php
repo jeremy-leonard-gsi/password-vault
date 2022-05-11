@@ -1,7 +1,7 @@
 <?php
 
 class SiteObject {
-        private $properties;
+        protected $properties;
     
 	public function write($array) {
 		foreach($array as $key => $value){
