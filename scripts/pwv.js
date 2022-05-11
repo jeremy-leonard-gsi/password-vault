@@ -89,7 +89,7 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
                 $( '#accountNotes-Id' ).val('');
                 $( '#editaccesscontrol-groups' ).html('');
                 acls='';
-                account.roups.forEach(function(acl) {
+                account.groups.forEach(function(acl) {
                     acls += '<div class="form-check">';
                     acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'">';
                     acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
