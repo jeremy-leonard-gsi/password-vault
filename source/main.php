@@ -53,6 +53,9 @@ switch($module) {
 	case 'passwordvault':
 		include('passwordvault.php');
 		break;
+        case 'admin':
+            include ('admin.php');
+            break;
 	default:
 		include('unknownmodule.php');
 }
