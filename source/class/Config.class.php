@@ -2,12 +2,8 @@
 
 class Config extends SiteObject{
 
-	private $db;
-        private $pwvPassword;
-        private $pwvSecret;
-        private $authLDAPSecret;
-        
-        private $hiddenFields;
+	private $db;        
+        public $hiddenFields;
 
     public function __construct($_CONFIG) {
         $this->write($_CONFIG);
@@ -20,9 +16,7 @@ class Config extends SiteObject{
             'pwvSecret',
             'db'
         ];
-        
     }
-	
 	private function readConfig(){
 		$query = "SELECT * FROM config";
 		$stmt = $this->db->query($query);
@@ -31,10 +25,6 @@ class Config extends SiteObject{
 			$this->write([$config['key']=>$config['value']]);		
 		}
 	}
-        public function __set($name, $value) {
-            $this->$name=$value;
-        }
-        
         public function __get($name) {
             error_log("Property: $name");
             $encodedValues = [
@@ -42,9 +32,9 @@ class Config extends SiteObject{
                 'pwvPassword'
             ];
             if(in_array($name, $encodedValues)){
-                return base64_decode($this->$name) ?? false;
+                return base64_decode($this->properties[$name]) ?? false;
             }else{
-                return $this->$name ?? false;
+                return $this->properties[$name] ?? false;
             }
         }
 }
