@@ -3,6 +3,9 @@
 class Config extends SiteObject{
 
 	private $db;
+        private $pwvPassword;
+        private $pwvSecret;
+        private $authLDAPSecret;
         
         private $hiddenFields;
 
