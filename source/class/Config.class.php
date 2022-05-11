@@ -51,12 +51,12 @@ class Config extends SiteObject{
             }
         }
         public function __get($name) {
-            error_log("Property: $name");
+            if($this->debug){
+                error_log("Property: $name");
+            }
             if(in_array($name, $this->encodedFields)){
-                error_log($this->$name);
                 return base64_decode($this->$name) ?? false;
             }else{
-                error_log($this->$name);
                 return $this->$name ?? false;
             }
         }
