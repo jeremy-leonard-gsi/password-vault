@@ -33,7 +33,7 @@ class Config extends SiteObject{
             if(in_array($name, $encodedValues)){
                 return base64_decode($this->$name) ?? false;
             }else{
-                parent::__get($name);
+                return $this->$name ?? false;
             }
         }
 }
