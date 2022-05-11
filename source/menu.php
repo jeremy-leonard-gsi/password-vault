@@ -16,7 +16,7 @@
                                <a class="dropdown-item" href="<?=$site->config->base?>">Password Vault</a>
                                 <?php
                                     if(in_array($site->config->globalAdminGroupDN, $_SESSION['groups'])){
-                                        echo '<a class="dropdown-item" href="<?=$site->config->base?>/admin">Admin</a>';
+                                        echo '<a class="dropdown-item" href="'.$site->config->base.'/admin">Admin</a>';
                                     }
                                     ?>
 				<form method="post" action="<?=$site->config->base?>/login">
