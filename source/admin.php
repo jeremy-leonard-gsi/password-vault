@@ -2,10 +2,6 @@
 include 'header.php';
 include 'menu.php';
 
-//print_r(array_diff((array)$site->config, $_CONFIG));
-
-echo $site->config->pwvPassword;
-
 echo '<table class="table">';
 foreach($site->config as $key => $value){
     if($key != 'db'){
