@@ -4,7 +4,7 @@ class Config extends SiteObject{
 
 	private $db;
         protected $authLDAPSecret, $pwvPassword;
-        public $hiddenFields;
+        public $hiddenFields, $encodedFields;
 
     public function __construct($_CONFIG) {
         $this->write($_CONFIG);
@@ -16,6 +16,10 @@ class Config extends SiteObject{
             'configPassword',
             'pwvSecret',
             'db'
+        ];
+        $this->encodedFields = [
+            'authLDAPSecret',
+            'pwvPassword'
         ];
     }
 	private function readConfig(){
@@ -31,11 +35,7 @@ class Config extends SiteObject{
 	}
         public function __get($name) {
             error_log("Property: $name");
-            $encodedValues = [
-                'authLDAPSecret',
-                'pwvPassword'
-            ];
-            if(in_array($name, $encodedValues)){
+            if(in_array($name, $this->encodedFields)){
                 error_log($this->$name);
                 return base64_decode($this->$name) ?? false;
             }else{
