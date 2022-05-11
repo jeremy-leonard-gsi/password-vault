@@ -2,10 +2,10 @@
 include 'header.php';
 include 'menu.php';
 
-print_r($site->config);
+print_r(array_diff($site->config, $_CONFIG));
 
 echo '<table class="table">';
-foreach($site->config as $key => $value){
+foreach(array_diff($site->config, $_CONFIG) as $key => $value){
        echo sprintf('<tr><th>%s</th><td>%s</td></tr>',$key,$value);
 }
 echo '</table>';
