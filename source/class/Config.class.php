@@ -5,6 +5,25 @@ class Config extends SiteObject{
 	private $db;
         protected $authLDAPSecret, $pwvPassword;
         public $hiddenFields, $encodedFields;
+        
+        public $apikey;
+        public $authLDAPBaseDN;
+        public $authLDAPBindDN;
+        public $authLDAPFilter;
+        public $authLDAPFullnameAttribute;
+        public $authLDAPURI;
+        public $authLDAPUserAttribute;
+        public $authType;
+        public $base;
+        public $debug;
+        public $globalAdminGroupDN;
+        public $groupDNs;
+        public $logoURI;
+        public $pwvDSN;
+        public $pwvUser;
+        public $requireSSL;
+        public $title;
+        public $userSource;
 
     public function __construct($_CONFIG) {
         $this->write($_CONFIG);
