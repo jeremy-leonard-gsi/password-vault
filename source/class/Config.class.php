@@ -2,7 +2,8 @@
 
 class Config extends SiteObject{
 
-	private $db;        
+	private $db;
+        protected $authLDAPSecret, $pwvPassword;
         public $hiddenFields;
 
     public function __construct($_CONFIG) {
@@ -35,11 +36,11 @@ class Config extends SiteObject{
                 'pwvPassword'
             ];
             if(in_array($name, $encodedValues)){
-                error_log($this->properties[$name]);
-                return base64_decode($this->properties[$name]) ?? false;
+                error_log($this->$name);
+                return base64_decode($this->$name) ?? false;
             }else{
-                error_log($this->properties[$name]);
-                return $this->properties[$name] ?? false;
+                error_log($this->$name);
+                return $this->$name ?? false;
             }
         }
 }
