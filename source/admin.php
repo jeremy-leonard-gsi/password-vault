@@ -18,13 +18,16 @@ foreach($site->config->encodedFields as $key){
 
 ksort($keys);
 ?>
-<form method="post">
-    <?php
-        foreach($keys as $key => $value){
-            echo addFormElement($key, $value);
-        }
-   ?>
-</form>
+<div class="container">
+    <form method="post">
+        <?php
+            foreach($keys as $key => $value){
+                echo addFormElement($key, $value);
+            }
+       ?>
+        <input class="form-control form-control-sm" type="submit" value="Save">
+    </form>
+</div>
 <?php
 include 'footer.php';
 
@@ -32,7 +35,7 @@ function addFormElement($key,$value){
     $output = <<<END
         <div class="form-group">
             <label for="%sId">%s</label>
-            <input class="form-control" type="text" id="%sId" name="%s" value="%s">
+            <input class="form-control form-control-sm" type="text" id="%sId" name="%s" value="%s">
         </div>
     END;
     return sprintf($output,$key,$key,$key,$key,$value);
