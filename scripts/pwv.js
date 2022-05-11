@@ -78,25 +78,25 @@ $( '#addEditAccount' ).on( 'show.bs.modal', function (event) {
 	var accountid = button.data('accountid');
 	var action = button.data('action');
 	if (action=='addAccount') {
-			$( '#addEditActionId' ).val('addAccount');
-			$( '#accountId-Id' ).val('');
-			$( '#url-Id' ).val('');
-			$( '#system-Id' ).val('');
-			$( '#accountName-Id' ).val('');
-			$( '#password-Id' ).val('');
-			$( '#accountNotes-Id' ).val('');
-                        $( '#editaccesscontrol-groups' ).html('');
-                        acls='';
-                        account.configGroups.forEach(function(acl) {
-                            if(account.userGroups.includes(acl)){
-                                acls += '<div class="form-check">';
-                                acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'"';
-                                acls += '>';
-                                acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
-                                acls += '</div>';
-                            }
-                        });
-                        $( '#editaccesscontrol-groups' ).html(acls);		
+            $.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
+                account = JSON.parse(data);
+                $( '#addEditActionId' ).val('addAccount');
+                $( '#accountId-Id' ).val('');
+                $( '#url-Id' ).val('');
+                $( '#system-Id' ).val('');
+                $( '#accountName-Id' ).val('');
+                $( '#password-Id' ).val('');
+                $( '#accountNotes-Id' ).val('');
+                $( '#editaccesscontrol-groups' ).html('');
+                acls='';
+                account.roups.forEach(function(acl) {
+                    acls += '<div class="form-check">';
+                    acls += '<input class="form-check-input" type="checkbox" name="acls[]" value="' + acl + '" id="'+ acl +'">';
+                    acls += '<label class="form-check-label" for="'+ acl +'">'+ acl +'</label>';
+                    acls += '</div>';
+                });
+                $( '#editaccesscontrol-groups' ).html(acls);
+            });
 	}else{
 		$.post('', {action: "getPwvAccountJSON",accountid: accountid }).done(function (data) {
 			account = JSON.parse(data);
