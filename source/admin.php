@@ -4,6 +4,14 @@ if(!in_array($site->config->globalAdminGroupDN,$_SESSION['groups'])){
     include('unknownmodule.php');
     exit;
 }
+
+if($site->request->method=='POST'){
+    foreach($site->request->post->config as $key => $value){
+        $site->config->$key=$value;
+    }
+        $site->config->saveConfig();
+}
+
 include 'header.php';
 include 'menu.php';
 
