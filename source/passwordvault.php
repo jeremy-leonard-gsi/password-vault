@@ -2,6 +2,10 @@
 
 if($site->request->method=="POST"){
 	switch($site->request->action) {
+                case "getPWVGroupsJSON":
+                    echo json_encode(array_intersect($_SESSION['groups'],explode(';',$site->config->groupDNs)));
+                    exit;
+                    break;
 		case "getPwvAccountJSON":
 			echo json_encode($pwv->getAccountInfo($site->request->post->accountid)[0]);
 			exit;
