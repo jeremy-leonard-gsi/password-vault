@@ -6,12 +6,22 @@ class Config extends SiteObject{
         private $pwvPassword;
         private $pwvSecret;
         private $authLDAPSecret;
+        
+        private $hiddenFields;
 
     public function __construct($_CONFIG) {
-		$this->write($_CONFIG);
-		$this->db = new PDO($this->configDSN,$this->configUsername, $this->configPassword);
-		$this->readConfig();
-	}
+        $this->write($_CONFIG);
+        $this->db = new PDO($this->configDSN,$this->configUsername, $this->configPassword);
+        $this->readConfig();
+        $this->hiddenFields = [
+            'configDSN',
+            'configUsername',
+            'configPassword',
+            'pwvSecret',
+            'db'
+        ];
+        
+    }
 	
 	private function readConfig(){
 		$query = "SELECT * FROM config";

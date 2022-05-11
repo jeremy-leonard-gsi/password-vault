@@ -3,8 +3,9 @@ include 'header.php';
 include 'menu.php';
 
 echo '<table class="table">';
+
 foreach($site->config as $key => $value){
-    if($key != 'db'){
+    if(!in_array($key, $site->config->hiddenFields)){
        echo sprintf('<tr><th>%s</th><td>%s</td></tr>',$key,$value);
     }
 }
