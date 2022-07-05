@@ -97,7 +97,7 @@ include('menu.php');
 							foreach($site->passwords as $key => $password){
 								?>
 								<div class="row m-0 border-bottom text-nowrap">
-									<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system>?$key?>" onclick="advancedCopyTo('system<?$key?>');" title="Click to copy to your clipboard."><?=$password["system"]?></div>
+									<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system><?=$key?>" onclick="advancedCopyTo('system<?$key?>');" title="Click to copy to your clipboard."><?=$password["system"]?></div>
 									<div class="col col-5 col-md-3 cursor-copy text-truncate" data-fieldName="accountName" id="accountName<?=$key?>" onclick="advancedCopyTo('accountName<?$key?>');" title="Click to copy to your clipboard."><?=$password["accountName"]?></div>
 									<div class="col col-6 col-md-3">
 										<div class="input-group">
@@ -107,7 +107,7 @@ include('menu.php');
 											</div>
 										</div>
 									</div>	
-									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes>?$key?>" onclick="advancedCopyTo('accountNotes<?$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
+									<div class="col cursor-copy col-3 text-truncate d-none d-md-block" data-fieldName="accountNotes" id="accountNotes><?=$key?>" onclick="advancedCopyTo('accountNotes<?=$key?>');" title="Click to copy to your clipboard."><?=base64_decode($password["accountNotes"])?></div>
 									<div class="col col-1 pl-0 pl-md-4">
 										<button class="btn material-icons-outlined md-18 px-0 px-md-3" title="Show Details" data-accountid="<?=$password["accountId"]?>" data-toggle="modal" data-target="#accountInfo">info</button>											
 									</div>
