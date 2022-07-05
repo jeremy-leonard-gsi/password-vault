@@ -133,10 +133,10 @@ class Passwordvault {
             return $accounts;
 	}
 	public function getCurrentPassword($accountId) {
-            if(in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){            
+            if(isset($_SESSION['groups']) AND in_array($this->config->globalAdminGroupDN, $_SESSION['groups'])){
 		$query = "SELECT * FROM `passwords` WHERE `passwords`.accountid=:accountid AND passwordActive=true;";
                 $stmt = $this->db->prepare($query);
-            }else{
+            }elseif(isset($_SESSION['groups'])){
 		$query = "SELECT passwords.* FROM `passwords` LEFT JOIN `acls` ON `acls`.`accountId`=`passwords`.`accountId` WHERE `passwords`.accountid=:accountid AND passwordActive=true AND (";
                 foreach($_SESSION['groups'] as $key => $group){
                     $groups[] = "acls.group=:group$key";
@@ -147,6 +147,9 @@ class Passwordvault {
                 foreach($_SESSION['groups'] as $key => $group){
                     $stmt->bindValue(":group$key",$group);
                 }
+            }elseif($_SESSION['username']==='API'){
+                $query = "SELECT * FROM `passwords` WHERE `passwords`.accountid=:accountid AND passwordActive=true;";
+                $stmt = $this->db->prepare($query);
             }
             $stmt->bindValue(':accountid',$accountId,PDO::PARAM_INT);
             if($this->config->debug){
