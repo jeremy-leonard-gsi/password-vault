@@ -300,6 +300,7 @@ class Passwordvault {
             $stmt->bindValue(':accountId',$accountId);
             $stmt->execute();
             $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $DNs=[];
             foreach($groups as $group){
                 $DNs[]=$group['group'];
             }
