@@ -145,7 +145,6 @@ include('menu.php');
 
 			</div>
 		</div>
-	</div>
 
 	<div class="modal" id="accountInfo" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
