@@ -10,7 +10,7 @@ account password.
 
 ## Configuration
 
-Administration can be managed by members of the ***Global Admi*** group. This is
+Administration can be managed by members of the ***Global Admin*** group. This is
 accessible from the drop down menu by clicking on your displayed name and
 selecting ***Admin***.
 
