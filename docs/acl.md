@@ -15,24 +15,31 @@ groupDNs.
 
 >### globalAdminGroupDN
 >
-> This configuration setting contains the full DN of the group that always has 
+>This configuration setting contains the full DN of the group that always has 
 >access to all the accounts. Members of this group can also access the admin 
 >page and change settings.
 >
->` globalAdminGroupDN = CN=Domain Admins, CN=Users, DC=domain, DC=TLD`
+>`globalAdminGroupDN = CN=Domain Admins, CN=Users, DC=domain, DC=TLD`
+>
 
 >### groupDNs
 >
 >This configuration setting contains all the groups that are allowed to access 
->the password database system.
+>the password database system. The groups are listed with their full DNs 
+> seperated by semi-colons.
 >
->-Users whom are members of any of these groups will be able to log in. 
->-Users will see all the accounts assigned to any 
->of the groups they are a member of. 
->-Users may also add new accounts to the database.
->-Users may delete any accounts they have access to.
->-Users may update/edit any account they have access to.
->-Users may add accounts to any group they are a mamber of.
+> - Users whom are members of any of these groups will be able to log in. 
+> - Users will see all the accounts assigned to any 
+> of the groups they are a member of. 
+> - Users may also add new accounts to the database.
+> - Users may delete any accounts they have access to.
+> - Users may update/edit any account they have access to.
+> - Users may add accounts to any group they are a mamber of.
+>
+>`groupDNs =  CN=Domain Admins, CN=Users, DC=domain, DC=TLD;CN=HVAC Users, 
+>CN=Users, DC=domain, DC=TLD;CN=Developers, CN=Users, DC=domain, DC=TLD;
+>CN=Helpdesk Users, CN=Users, DC=domain, DC=TLD`
+>
 
 ## Assigning accounts to groups
 
