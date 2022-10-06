@@ -10,6 +10,12 @@ account password.
 
 ## Configuration
 
+Administration can be managed by members of the ***Global Admi*** group. This is
+accessible from the drop down menu by clicking on your displayed name and
+selecting ***Admin***.
+
+To switch back to the list of password select ***Password Vault***.
+
 ACL configureation is managed by two config values, ***globalAdminGroupDN*** and 
 ***groupDNs***.
 
