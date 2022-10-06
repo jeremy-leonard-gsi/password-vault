@@ -10,7 +10,8 @@ if($site->request->method=='POST'){
         $site->config->$key=$value;
     }
     $site->config->saveConfig();
-    header("Location: ".$_SERVER['REQUEST_URI']);
+    header("Location: ". filter_input(INPUT_SERVER, 'REQUEST_URI'));
+    exit;
 }
 
 
@@ -42,11 +43,11 @@ ksort($keys);
 include 'footer.php';
 
 function addFormElement($key,$value){
-    $output = <<<END
+    $output = '
         <div class="form-group">
             <label for="%sId">%s</label>
             <input class="form-control form-control-sm" type="text" id="%sId" name="config[%s]" value="%s">
         </div>
-    END;
+    ';
     return sprintf($output,$key,$key,$key,$key,$value);
 }
