@@ -17,7 +17,8 @@ This is based on group membersips in the LDAP directory.
 
 ## To Do
 
-- Add password generation
-- Add logging
+- Add password generation.
+- Add logging.
 - Extend ACLs to user Owners to manage group password and members to have a more
  restricted view.
+- Write the installation/upgrade documentation.
