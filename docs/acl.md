@@ -51,7 +51,7 @@ ACL configureation is managed by two config values, ***globalAdminGroupDN*** and
 
 When adding a new account or editing an edisting account:
 
-1. Select the ***Access Controll*** tab.
+1. Select the ***Access Control*** tab.
 2. Check the box on any group you wish its members to have access to the account
  you are adding or editing.
 
