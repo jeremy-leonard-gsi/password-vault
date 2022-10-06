@@ -145,7 +145,6 @@ include('menu.php');
 
 			</div>
 		</div>
-	</div>
 
 	<div class="modal" id="accountInfo" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -197,7 +196,7 @@ include('menu.php');
 			</div>
 		</div>
 	</div>
-	<div class="modal" id="passwordHistoryModal" tabindex="-1" role="dialog">
+	<div class="modal modal-lg" id="passwordHistoryModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">

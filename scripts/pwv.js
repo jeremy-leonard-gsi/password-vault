@@ -66,9 +66,9 @@ $( '#passwordHistoryModal' ).on( 'show.bs.modal', function (event) {
 		passwords = JSON.parse(data);
 		console.log(passwords);
 		$( '#passwordHistoryList-Id' ).empty();
-		$( '#passwordHistoryList-Id' ).append('<div class="row"><div class="col col-4"><strong>Password</strong></div><div class="col col-3"><strong>Created By</strong></div><div class="col col-5"><strong>Created Date</strong></div></div>');
+		$( '#passwordHistoryList-Id' ).append('<div class="row"><div class="col"><strong>Password</strong></div><div class="col"><strong>Created By</strong></div><div class="col"><strong>Created Date</strong></div></div>');
 		passwords.forEach( function(password){
-			$( '#passwordHistoryList-Id' ).append('<div class="row"><div class="col col-4 cursor-copy text-truncate" id="passwordId-'+password.passwordId+'" onclick="advancedCopyTo(\'passwordId-'+password.passwordId+'\');">'+password.password+'</div><div class="col col-3">'+password.passwordCreatedBy+'</div><div class="col col-5">'+password.passwordCreated+'</div></div>');
+			$( '#passwordHistoryList-Id' ).append('<div class="row"><div class="col cursor-copy" id="passwordId-'+password.passwordId+'" onclick="advancedCopyTo(\'passwordId-'+password.passwordId+'\');">'+password.password+'</div><div class="col">'+password.passwordCreatedBy+'</div><div class="col">'+password.passwordCreated+'</div></div>');
 		});
 	});
 });
