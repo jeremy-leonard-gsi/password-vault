@@ -5,13 +5,13 @@
 
 Account passwords can be assigned to groups so only users whom are members of 
 the specified groups can access the password.
-Users that are membes of the ** Global Admin ** Group can always access all 
+Users that are membes of the ***Global Admin*** Group can always access all 
 account password.
 
 ## Configuration
 
-ACL configureation is managed by two config values, globalAdminGroupDN and 
-groupDNs.
+ACL configureation is managed by two config values, ***globalAdminGroupDN*** and 
+***groupDNs***.
 
 >### globalAdminGroupDN
 >
