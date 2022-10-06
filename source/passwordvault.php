@@ -224,7 +224,7 @@ include('menu.php');
 					</button>
 				</div>
 				<div class="modal-body">
-					<form method="post" enctype="multipart/form-data" action="<?=$_SERVER["REQUEST_URI"] ?>">
+					<form method="post" enctype="multipart/form-data" action="<?=filter_input(INPUT_SERVER,"REQUEST_URI") ?>">
 						<div class="custom-file">
 							<input type="hidden" name="action" value="import">
 							<input type="file" class="custom-file-input" id="importCSVFile" name="CSVFile">
