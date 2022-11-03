@@ -27,7 +27,7 @@ function copyto(id)
 }
 function Filter(filter,column) {
 	filterText = filter.value.toUpperCase();
-	$( ".pwvData div.col" ).each(
+	$( ".pwvData div.col,a.col" ).each(
 		function (element) {
 			if( $( this ).data('fieldname')==column){
 				if ($( this ).text().toUpperCase().indexOf(filterText) >= 0 || filterText==''){
