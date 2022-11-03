@@ -118,7 +118,7 @@ include('menu.php');
 								<div class="row m-0 border-bottom text-nowrap">
 									<?php
 									if(is_null($password['url']) OR $password['url']=='') {
-										echo '<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system'.$key.'" onclick="advancedCopyTo(\'accountName<?=$key?>\');" title="Click to copy to your clipboard.">'.$password["system"].'</div>';
+										echo '<div class="col cursor-copy col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system'.$key.'" onclick="advancedCopyTo(\'system'.$key.'\');" title="Click to copy to your clipboard.">'.$password["system"].'</div>';
 									}else{
 										echo '<a href="'.$password['url'].'" target="_blank" class="col col-2 text-truncate d-none d-md-block" data-fieldName="system" id="system'.$key.'" title="Click to go to the URL: '.$password['url'].'">'.$password["system"].'</a>';
 									}
