@@ -7,6 +7,15 @@ switch($site->request->method) {
     case 'POST':
         switch($site->request->action) {
             case 'login':
+            if(
+                        is_null($site->request->post->username)
+                        or is_null($site->request->post->password)
+                        or strlen($site->request->post->username) == 0
+                        or strlen($site->request->post->password) == 0
+                    ){
+                    $alert->setMessage("Username and password must not be blank");
+                    break;
+                }
                 switch($site->config->authType) {
                     case "LDAP":
                         if($site->debug){
